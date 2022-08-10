@@ -33,5 +33,5 @@ var donut = new Donutty(document.getElementById("donut"), {
 
 const heading = document.querySelector("h1");
 if (heading) {
-  heading.textContent = "This is a heading for v0.2.0";
+  heading.textContent = "This is a heading for v0.3.0";
 }
