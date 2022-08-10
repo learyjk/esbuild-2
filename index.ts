@@ -19,7 +19,7 @@ var myConfetti = confetti.create(myCanvas, {
   useWorker: true,
 });
 myConfetti({
-  particleCount: 100,
+  particleCount: 1000,
   spread: 160,
   // any other options from the global
   // confetti function
@@ -33,5 +33,5 @@ var donut = new Donutty(document.getElementById("donut"), {
 
 const heading = document.querySelector("h1");
 if (heading) {
-  heading.textContent = "This is a heading for v0.3.0";
+  heading.textContent = "This is a heading for v0.4.0";
 }
