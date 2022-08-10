@@ -1,7 +1,7 @@
 import confetti from "canvas-confetti";
 import "donutty/dist/donutty.min.js";
 
-declare const Donutty;
+declare function Donutty(a: HTMLElement | null, b: object): void;
 
 const hello = (name: string): string => {
   return `hello there ${name}`;
@@ -30,3 +30,8 @@ var donut = new Donutty(document.getElementById("donut"), {
   max: 50,
   value: 11,
 });
+
+const heading = document.querySelector("h1");
+if (heading) {
+  heading.textContent = "This is a new heading";
+}
