@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild index.ts --bundle --watch --analyze --minify --outfile=dist/index.js",
+    "build": "esbuild index.ts --bundle --watch --outfile=dist/index.js ",
     "bbuild": "node builder.js",
-    "serve": "serve"
+    "serve": "serve",
+    "tbuild": "tsc --watch index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +18,9 @@
     "serve": "^14.0.1"
   },
   "dependencies": {
+    "@splidejs/splide": "^4.0.7",
     "canvas-confetti": "^1.5.1",
-    "donutty": "^2.3.1"
+    "donutty": "^2.3.1",
+    "typescript": "^4.7.4"
   }
 }

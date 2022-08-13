@@ -1,5 +1,3134 @@
-(()=>{var O={};(function v(f,u,y,h){var $=!!(f.Worker&&f.Blob&&f.Promise&&f.OffscreenCanvas&&f.OffscreenCanvasRenderingContext2D&&f.HTMLCanvasElement&&f.HTMLCanvasElement.prototype.transferControlToOffscreen&&f.URL&&f.URL.createObjectURL);function C(){}function i(e){var t=u.exports.Promise,n=t!==void 0?t:f.Promise;return typeof n=="function"?new n(e):(e(C,C),null)}var d=function(){var e=Math.floor(16.666666666666668),t,n,s={},l=0;return typeof requestAnimationFrame=="function"&&typeof cancelAnimationFrame=="function"?(t=function(a){var r=Math.random();return s[r]=requestAnimationFrame(function c(g){l===g||l+e-1<g?(l=g,delete s[r],a()):s[r]=requestAnimationFrame(c)}),r},n=function(a){s[a]&&cancelAnimationFrame(s[a])}):(t=function(a){return setTimeout(a,e)},n=function(a){return clearTimeout(a)}),{frame:t,cancel:n}}(),o=function(){var e,t,n={};function s(l){function a(r,c){l.postMessage({options:r||{},callback:c})}l.init=function(c){var g=c.transferControlToOffscreen();l.postMessage({canvas:g},[g])},l.fire=function(c,g,A){if(t)return a(c,null),t;var b=Math.random().toString(36).slice(2);return t=i(function(S){function w(p){p.data.callback===b&&(delete n[b],l.removeEventListener("message",w),t=null,A(),S())}l.addEventListener("message",w),a(c,b),n[b]=w.bind(null,{data:{callback:b}})}),t},l.reset=function(){l.postMessage({reset:!0});for(var c in n)n[c](),delete n[c]}}return function(){if(e)return e;if(!y&&$){var l=["var CONFETTI, SIZE = {}, module = {};","("+v.toString()+")(this, module, true, SIZE);","onmessage = function(msg) {","  if (msg.data.options) {","    CONFETTI(msg.data.options).then(function () {","      if (msg.data.callback) {","        postMessage({ callback: msg.data.callback });","      }","    });","  } else if (msg.data.reset) {","    CONFETTI.reset();","  } else if (msg.data.resize) {","    SIZE.width = msg.data.resize.width;","    SIZE.height = msg.data.resize.height;","  } else if (msg.data.canvas) {","    SIZE.width = msg.data.canvas.width;","    SIZE.height = msg.data.canvas.height;","    CONFETTI = module.exports.create(msg.data.canvas);","  }","}"].join(`
-`);try{e=new Worker(URL.createObjectURL(new Blob([l])))}catch(a){return typeof console!==void 0&&typeof console.warn=="function"&&console.warn("\u{1F38A} Could not load worker",a),null}s(e)}return e}}(),M={particleCount:50,angle:90,spread:45,startVelocity:45,decay:.9,gravity:1,drift:0,ticks:200,x:.5,y:.5,shapes:["square","circle"],zIndex:100,colors:["#26ccff","#a25afd","#ff5e7e","#88ff5a","#fcff42","#ffa62d","#ff36ff"],disableForReducedMotion:!1,scalar:1};function Y(e,t){return t?t(e):e}function Z(e){return e!=null}function m(e,t,n){return Y(e&&Z(e[t])?e[t]:M[t],n)}function _(e){return e<0?0:Math.floor(e)}function X(e,t){return Math.floor(Math.random()*(t-e))+e}function I(e){return parseInt(e,16)}function j(e){return e.map(J)}function J(e){var t=String(e).replace(/[^0-9a-f]/gi,"");return t.length<6&&(t=t[0]+t[0]+t[1]+t[1]+t[2]+t[2]),{r:I(t.substring(0,2)),g:I(t.substring(2,4)),b:I(t.substring(4,6))}}function G(e){var t=m(e,"origin",Object);return t.x=m(t,"x",Number),t.y=m(t,"y",Number),t}function K(e){e.width=document.documentElement.clientWidth,e.height=document.documentElement.clientHeight}function Q(e){var t=e.getBoundingClientRect();e.width=t.width,e.height=t.height}function tt(e){var t=document.createElement("canvas");return t.style.position="fixed",t.style.top="0px",t.style.left="0px",t.style.pointerEvents="none",t.style.zIndex=e,t}function et(e,t,n,s,l,a,r,c,g){e.save(),e.translate(t,n),e.rotate(a),e.scale(s,l),e.arc(0,0,1,r,c,g),e.restore()}function it(e){var t=e.angle*(Math.PI/180),n=e.spread*(Math.PI/180);return{x:e.x,y:e.y,wobble:Math.random()*10,wobbleSpeed:Math.min(.11,Math.random()*.1+.05),velocity:e.startVelocity*.5+Math.random()*e.startVelocity,angle2D:-t+(.5*n-Math.random()*n),tiltAngle:(Math.random()*(.75-.25)+.25)*Math.PI,color:e.color,shape:e.shape,tick:0,totalTicks:e.ticks,decay:e.decay,drift:e.drift,random:Math.random()+2,tiltSin:0,tiltCos:0,wobbleX:0,wobbleY:0,gravity:e.gravity*3,ovalScalar:.6,scalar:e.scalar}}function st(e,t){t.x+=Math.cos(t.angle2D)*t.velocity+t.drift,t.y+=Math.sin(t.angle2D)*t.velocity+t.gravity,t.wobble+=t.wobbleSpeed,t.velocity*=t.decay,t.tiltAngle+=.1,t.tiltSin=Math.sin(t.tiltAngle),t.tiltCos=Math.cos(t.tiltAngle),t.random=Math.random()+2,t.wobbleX=t.x+10*t.scalar*Math.cos(t.wobble),t.wobbleY=t.y+10*t.scalar*Math.sin(t.wobble);var n=t.tick++/t.totalTicks,s=t.x+t.random*t.tiltCos,l=t.y+t.random*t.tiltSin,a=t.wobbleX+t.random*t.tiltCos,r=t.wobbleY+t.random*t.tiltSin;return e.fillStyle="rgba("+t.color.r+", "+t.color.g+", "+t.color.b+", "+(1-n)+")",e.beginPath(),t.shape==="circle"?e.ellipse?e.ellipse(t.x,t.y,Math.abs(a-s)*t.ovalScalar,Math.abs(r-l)*t.ovalScalar,Math.PI/10*t.wobble,0,2*Math.PI):et(e,t.x,t.y,Math.abs(a-s)*t.ovalScalar,Math.abs(r-l)*t.ovalScalar,Math.PI/10*t.wobble,0,2*Math.PI):(e.moveTo(Math.floor(t.x),Math.floor(t.y)),e.lineTo(Math.floor(t.wobbleX),Math.floor(l)),e.lineTo(Math.floor(a),Math.floor(r)),e.lineTo(Math.floor(s),Math.floor(t.wobbleY))),e.closePath(),e.fill(),t.tick<t.totalTicks}function rt(e,t,n,s,l){var a=t.slice(),r=e.getContext("2d"),c,g,A=i(function(b){function S(){c=g=null,r.clearRect(0,0,s.width,s.height),l(),b()}function w(){y&&!(s.width===h.width&&s.height===h.height)&&(s.width=e.width=h.width,s.height=e.height=h.height),!s.width&&!s.height&&(n(e),s.width=e.width,s.height=e.height),r.clearRect(0,0,s.width,s.height),a=a.filter(function(p){return st(r,p)}),a.length?c=d.frame(w):S()}c=d.frame(w),g=S});return{addFettis:function(b){return a=a.concat(b),A},canvas:e,promise:A,reset:function(){c&&d.cancel(c),g&&g()}}}function P(e,t){var n=!e,s=!!m(t||{},"resize"),l=m(t,"disableForReducedMotion",Boolean),a=$&&!!m(t||{},"useWorker"),r=a?o():null,c=n?K:Q,g=e&&r?!!e.__confetti_initialized:!1,A=typeof matchMedia=="function"&&matchMedia("(prefers-reduced-motion)").matches,b;function S(p,D,R){for(var T=m(p,"particleCount",_),k=m(p,"angle",Number),E=m(p,"spread",Number),x=m(p,"startVelocity",Number),nt=m(p,"decay",Number),ot=m(p,"gravity",Number),at=m(p,"drift",Number),H=m(p,"colors",j),ht=m(p,"ticks",Number),W=m(p,"shapes"),lt=m(p,"scalar"),z=G(p),B=T,N=[],ut=e.width*z.x,ct=e.height*z.y;B--;)N.push(it({x:ut,y:ct,angle:k,spread:E,startVelocity:x,color:H[B%H.length],shape:W[X(0,W.length)],ticks:ht,decay:nt,gravity:ot,drift:at,scalar:lt}));return b?b.addFettis(N):(b=rt(e,N,c,D,R),b.promise)}function w(p){var D=l||m(p,"disableForReducedMotion",Boolean),R=m(p,"zIndex",Number);if(D&&A)return i(function(x){x()});n&&b?e=b.canvas:n&&!e&&(e=tt(R),document.body.appendChild(e)),s&&!g&&c(e);var T={width:e.width,height:e.height};r&&!g&&r.init(e),g=!0,r&&(e.__confetti_initialized=!0);function k(){if(r){var x={getBoundingClientRect:function(){if(!n)return e.getBoundingClientRect()}};c(x),r.postMessage({resize:{width:x.width,height:x.height}});return}T.width=T.height=null}function E(){b=null,s&&f.removeEventListener("resize",k),n&&e&&(document.body.removeChild(e),e=null,g=!1)}return s&&f.addEventListener("resize",k,!1),r?r.fire(p,T,E):S(p,T,E)}return w.reset=function(){r&&r.reset(),b&&b.reset()},w}var L;function q(){return L||(L=P(null,{useWorker:!0,resize:!0})),L}u.exports=function(){return q().apply(this,arguments)},u.exports.reset=function(){q().reset()},u.exports.create=P})(function(){return typeof window<"u"?window:typeof self<"u"?self:this||{}}(),O,!1);var V=O.exports,ft=O.exports.create;(function(v,f){var u,y="http://www.w3.org/2000/svg";function h(i){return i!==void 0}function $(i){return parseFloat(i,10)}function C(i){return h(i)&&(i===!0||i==="true")}(u=f.Donutty=function(i,d){return i&&typeof i=="string"?this.$wrapper=v.querySelectorAll(i)[0]:i instanceof window.HTMLElement?this.$wrapper=i:(this.$wrapper=v.body,d=i),this.$wrapper&&(h(d)||(d=this.getOptionsFromTag()),this.id=Math.random().toString(36).substr(2,5),this.state={},this.options=d||{},this.options.min=h(this.options.min)?$(this.options.min):0,this.options.max=h(this.options.max)?$(this.options.max):100,this.options.value=h(this.options.value)?$(this.options.value):50,this.options.round=!h(this.options.round)||C(this.options.round),this.options.circle=!h(this.options.circle)||C(this.options.circle),this.options.padding=h(this.options.padding)?$(this.options.padding):4,this.options.radius=$(this.options.radius)||50,this.options.thickness=$(this.options.thickness)||10,this.options.bg=this.options.bg||"rgba(70, 130, 180, 0.15)",this.options.color=this.options.color||"mediumslateblue",this.options.transition=this.options.transition||"all 1.2s cubic-bezier(0.57, 0.13, 0.18, 0.98)",this.options.text=!!h(this.options.text)&&this.options.text,this.options.title=h(this.options.title)?this.options.title:function(){return"Donut Chart Graphic"},this.options.desc=h(this.options.desc)?this.options.desc:function(o){return"A donut chart ranging from "+o.min+" to "+o.max+" with a current value of "+o.value+"."},this.options.dir=!!h(this.options.dir)&&this.options.dir,this.options.dir||(this.options.dir=this.$wrapper.dir),this.options.dir||(this.options.dir=document.body.parentElement.dir),this.init()),this}).prototype.getOptionsFromTag=function(){return JSON.parse(JSON.stringify(this.$wrapper.dataset))},u.prototype.init=function(){var i;return(this.$wrapper.donutty=this).createState(),i=this.getDashValues(),this.createSvg(),this.createBg(i),this.createDonut(i),this.createText(),this.createAccessibility(),this.insertFragments(i),this},u.prototype.createState=function(){return this.state.min=this.options.min,this.state.max=this.options.max,this.state.value=this.options.value,this.state.bg=this.options.bg,this.state.color=this.options.color,this},u.prototype.createText=function(){return typeof this.options.text=="function"&&(this.$text=v.createElement("span"),this.$text.setAttribute("class","donut-text"),this.$text.style.opacity=0,this.updateText()),this},u.prototype.createAccessibility=function(){return this.$title=v.createElementNS(y,"title"),this.$title.setAttribute("id","chartTitle-"+this.id),this.$title.setAttribute("class","donut-title"),this.$desc=v.createElementNS(y,"desc"),this.$desc.setAttribute("id","chartDesc-"+this.id),this.$desc.setAttribute("class","donut-desc"),this.updateAccessibility(),this},u.prototype.createBg=function(i){return this.$bg=v.createElementNS(y,"circle"),this.$bg.setAttribute("cx","50%"),this.$bg.setAttribute("cy","50%"),this.$bg.setAttribute("r",this.options.radius),this.$bg.setAttribute("fill","transparent"),this.$bg.setAttribute("stroke",this.state.bg),this.$bg.setAttribute("stroke-width",this.options.thickness+this.options.padding),this.$bg.setAttribute("stroke-dasharray",i.full*i.multiplier),this.$bg.setAttribute("class","donut-bg"),this.options.round&&this.$bg.setAttribute("stroke-linecap","round"),this},u.prototype.createDonut=function(i){return this.$donut=v.createElementNS(y,"circle"),this.$donut.setAttribute("fill","transparent"),this.$donut.setAttribute("cx","50%"),this.$donut.setAttribute("cy","50%"),this.$donut.setAttribute("r",this.options.radius),this.$donut.setAttribute("stroke",this.state.color),this.$donut.setAttribute("stroke-width",this.options.thickness),this.$donut.setAttribute("stroke-dashoffset",i.full),this.$donut.setAttribute("stroke-dasharray",i.full),this.$donut.setAttribute("class","donut-fill"),this.$donut.style.opacity=0,this.options.round&&this.$donut.setAttribute("stroke-linecap","round"),this},u.prototype.createSvg=function(){var i=2*this.options.radius+this.options.thickness+1,d=this.options.round?this.options.thickness/3:0,o=this.options.circle?90+d:-225,M=this.options.dir==="rtl"?"-1, 1":"1, 1";return 0<=this.options.padding&&(i+=this.options.padding),this.$html=v.createDocumentFragment(),this.$svg=v.createElementNS(y,"svg"),this.$svg.setAttribute("xmlns",y),this.$svg.setAttribute("viewbox","0 0 "+i+" "+i),this.$svg.setAttribute("width","100%"),this.$svg.setAttribute("style","transform: scale("+M+") rotate("+o+"deg)"),this.$svg.setAttribute("preserveAspectRatio","xMidYMid meet"),this.$svg.setAttribute("class","donut"),this.$svg.setAttribute("role","img"),this.$svg.setAttribute("aria-labelledby","chartTitle-"+this.id+" chartDesc-"+this.id),this.$svg.setAttribute("role","img"),this},u.prototype.insertFragments=function(i){this.$svg.appendChild(this.$title),this.$svg.appendChild(this.$desc),this.$svg.appendChild(this.$bg),this.$svg.appendChild(this.$donut),this.$html.appendChild(this.$svg),this.$text&&this.$html.appendChild(this.$text),this.$wrapper.appendChild(this.$html),this.$wrapper.innerHTML=this.$wrapper.innerHTML,this.$svg=this.$wrapper.querySelector(".donut"),this.$bg=this.$wrapper.querySelector(".donut-bg"),this.$donut=this.$wrapper.querySelector(".donut-fill"),this.$title=this.$wrapper.querySelector(".donut-title"),this.$desc=this.$wrapper.querySelector(".donut-desc"),this.$text&&(this.$text=this.$wrapper.querySelector(".donut-text")),this.animate(i.fill,i.full)},u.prototype.getDashValues=function(){var i,d,o,M;return M=this.options.circle?1:.75,o=(i=2*Math.PI*this.options.radius)-i*M/100*(d=(this.state.value-this.state.min)/(this.state.max-this.state.min)*100),this.options.round&&this.options.circle&&d<100&&o<this.options.thickness&&(o=this.options.thickness),{fill:o,full:i,multiplier:M}},u.prototype.animate=function(i,d){var o=this;this.$bg.style.transition=this.options.transition,this.$donut.style.transition=this.options.transition,this.$text&&(this.$text.style.transition=this.options.transition),window.setTimeout(function(){o.$bg.setAttribute("stroke",o.state.bg),o.$bg.style.opacity=1,o.$donut.setAttribute("stroke-dashoffset",i),o.$donut.setAttribute("stroke-dasharray",d),o.$donut.setAttribute("stroke",o.state.color),o.$donut.style.opacity=1,o.$text&&(o.$text.style.opacity=1)},16)},u.prototype.updateText=function(){return typeof this.options.text=="function"&&(this.$text.innerHTML=this.options.text(this.state)),this},u.prototype.updateAccessibility=function(){return typeof this.options.title=="function"?this.$title.innerHTML=this.options.title(this.state):this.$title.innerHTML=this.options.title,typeof this.options.desc=="function"?this.$desc.innerHTML=this.options.desc(this.state):this.$desc.innerHTML=this.options.desc,this},u.prototype.set=function(i,d){var o;return h(i)&&h(d)&&(this.state[i]=d,o=this.getDashValues(),this.updateText(),this.updateAccessibility(),this.animate(o.fill,o.full)),this},u.prototype.setState=function(i){var d;return h(i.value)&&(this.state.value=i.value),h(i.min)&&(this.state.min=i.min),h(i.max)&&(this.state.max=i.max),h(i.bg)&&(this.state.bg=i.bg),h(i.color)&&(this.state.color=i.color),d=this.getDashValues(),this.updateText(),this.updateAccessibility(),this.animate(d.fill,d.full),this}})(document,window),function(v){var f=document,u=function(){var y=document.querySelectorAll("[data-donutty]");Array.prototype.forEach.call(y,function(h){new v(h)})};f.readyState==="complete"||f.readyState!=="loading"&&!f.documentElement.doScroll?u():f.addEventListener("DOMContentLoaded",u)}(Donutty);var dt=v=>`hello there ${v}`;console.log(dt("Keegan"));var F=document.createElement("canvas");F.style.width="100vw";F.style.height="100vh";document.body.appendChild(F);var pt=V.create(F,{resize:!0,useWorker:!0});pt({particleCount:1e3,spread:160});var vt=new Donutty(document.getElementById("donut"),{min:-50,max:50,value:11}),U=document.querySelector("h1");U&&(U.textContent="This is a heading for v0.4.0");})();
+"use strict";
+(() => {
+  // node_modules/canvas-confetti/dist/confetti.module.mjs
+  var module = {};
+  (function main(global, module2, isWorker, workerSize) {
+    var canUseWorker = !!(global.Worker && global.Blob && global.Promise && global.OffscreenCanvas && global.OffscreenCanvasRenderingContext2D && global.HTMLCanvasElement && global.HTMLCanvasElement.prototype.transferControlToOffscreen && global.URL && global.URL.createObjectURL);
+    function noop3() {
+    }
+    function promise(func) {
+      var ModulePromise = module2.exports.Promise;
+      var Prom = ModulePromise !== void 0 ? ModulePromise : global.Promise;
+      if (typeof Prom === "function") {
+        return new Prom(func);
+      }
+      func(noop3, noop3);
+      return null;
+    }
+    var raf2 = function() {
+      var TIME = Math.floor(1e3 / 60);
+      var frame, cancel;
+      var frames = {};
+      var lastFrameTime = 0;
+      if (typeof requestAnimationFrame === "function" && typeof cancelAnimationFrame === "function") {
+        frame = function(cb) {
+          var id = Math.random();
+          frames[id] = requestAnimationFrame(function onFrame(time) {
+            if (lastFrameTime === time || lastFrameTime + TIME - 1 < time) {
+              lastFrameTime = time;
+              delete frames[id];
+              cb();
+            } else {
+              frames[id] = requestAnimationFrame(onFrame);
+            }
+          });
+          return id;
+        };
+        cancel = function(id) {
+          if (frames[id]) {
+            cancelAnimationFrame(frames[id]);
+          }
+        };
+      } else {
+        frame = function(cb) {
+          return setTimeout(cb, TIME);
+        };
+        cancel = function(timer) {
+          return clearTimeout(timer);
+        };
+      }
+      return { frame, cancel };
+    }();
+    var getWorker = function() {
+      var worker;
+      var prom;
+      var resolves = {};
+      function decorate(worker2) {
+        function execute(options, callback) {
+          worker2.postMessage({ options: options || {}, callback });
+        }
+        worker2.init = function initWorker(canvas) {
+          var offscreen = canvas.transferControlToOffscreen();
+          worker2.postMessage({ canvas: offscreen }, [offscreen]);
+        };
+        worker2.fire = function fireWorker(options, size, done) {
+          if (prom) {
+            execute(options, null);
+            return prom;
+          }
+          var id = Math.random().toString(36).slice(2);
+          prom = promise(function(resolve) {
+            function workerDone(msg) {
+              if (msg.data.callback !== id) {
+                return;
+              }
+              delete resolves[id];
+              worker2.removeEventListener("message", workerDone);
+              prom = null;
+              done();
+              resolve();
+            }
+            worker2.addEventListener("message", workerDone);
+            execute(options, id);
+            resolves[id] = workerDone.bind(null, { data: { callback: id } });
+          });
+          return prom;
+        };
+        worker2.reset = function resetWorker() {
+          worker2.postMessage({ reset: true });
+          for (var id in resolves) {
+            resolves[id]();
+            delete resolves[id];
+          }
+        };
+      }
+      return function() {
+        if (worker) {
+          return worker;
+        }
+        if (!isWorker && canUseWorker) {
+          var code = [
+            "var CONFETTI, SIZE = {}, module = {};",
+            "(" + main.toString() + ")(this, module, true, SIZE);",
+            "onmessage = function(msg) {",
+            "  if (msg.data.options) {",
+            "    CONFETTI(msg.data.options).then(function () {",
+            "      if (msg.data.callback) {",
+            "        postMessage({ callback: msg.data.callback });",
+            "      }",
+            "    });",
+            "  } else if (msg.data.reset) {",
+            "    CONFETTI.reset();",
+            "  } else if (msg.data.resize) {",
+            "    SIZE.width = msg.data.resize.width;",
+            "    SIZE.height = msg.data.resize.height;",
+            "  } else if (msg.data.canvas) {",
+            "    SIZE.width = msg.data.canvas.width;",
+            "    SIZE.height = msg.data.canvas.height;",
+            "    CONFETTI = module.exports.create(msg.data.canvas);",
+            "  }",
+            "}"
+          ].join("\n");
+          try {
+            worker = new Worker(URL.createObjectURL(new Blob([code])));
+          } catch (e) {
+            typeof console !== void 0 && typeof console.warn === "function" ? console.warn("\u{1F38A} Could not load worker", e) : null;
+            return null;
+          }
+          decorate(worker);
+        }
+        return worker;
+      };
+    }();
+    var defaults = {
+      particleCount: 50,
+      angle: 90,
+      spread: 45,
+      startVelocity: 45,
+      decay: 0.9,
+      gravity: 1,
+      drift: 0,
+      ticks: 200,
+      x: 0.5,
+      y: 0.5,
+      shapes: ["square", "circle"],
+      zIndex: 100,
+      colors: [
+        "#26ccff",
+        "#a25afd",
+        "#ff5e7e",
+        "#88ff5a",
+        "#fcff42",
+        "#ffa62d",
+        "#ff36ff"
+      ],
+      disableForReducedMotion: false,
+      scalar: 1
+    };
+    function convert(val, transform) {
+      return transform ? transform(val) : val;
+    }
+    function isOk(val) {
+      return !(val === null || val === void 0);
+    }
+    function prop(options, name2, transform) {
+      return convert(
+        options && isOk(options[name2]) ? options[name2] : defaults[name2],
+        transform
+      );
+    }
+    function onlyPositiveInt(number) {
+      return number < 0 ? 0 : Math.floor(number);
+    }
+    function randomInt(min2, max2) {
+      return Math.floor(Math.random() * (max2 - min2)) + min2;
+    }
+    function toDecimal(str) {
+      return parseInt(str, 16);
+    }
+    function colorsToRgb(colors) {
+      return colors.map(hexToRgb);
+    }
+    function hexToRgb(str) {
+      var val = String(str).replace(/[^0-9a-f]/gi, "");
+      if (val.length < 6) {
+        val = val[0] + val[0] + val[1] + val[1] + val[2] + val[2];
+      }
+      return {
+        r: toDecimal(val.substring(0, 2)),
+        g: toDecimal(val.substring(2, 4)),
+        b: toDecimal(val.substring(4, 6))
+      };
+    }
+    function getOrigin(options) {
+      var origin = prop(options, "origin", Object);
+      origin.x = prop(origin, "x", Number);
+      origin.y = prop(origin, "y", Number);
+      return origin;
+    }
+    function setCanvasWindowSize(canvas) {
+      canvas.width = document.documentElement.clientWidth;
+      canvas.height = document.documentElement.clientHeight;
+    }
+    function setCanvasRectSize(canvas) {
+      var rect2 = canvas.getBoundingClientRect();
+      canvas.width = rect2.width;
+      canvas.height = rect2.height;
+    }
+    function getCanvas(zIndex) {
+      var canvas = document.createElement("canvas");
+      canvas.style.position = "fixed";
+      canvas.style.top = "0px";
+      canvas.style.left = "0px";
+      canvas.style.pointerEvents = "none";
+      canvas.style.zIndex = zIndex;
+      return canvas;
+    }
+    function ellipse(context, x, y, radiusX, radiusY, rotation, startAngle, endAngle, antiClockwise) {
+      context.save();
+      context.translate(x, y);
+      context.rotate(rotation);
+      context.scale(radiusX, radiusY);
+      context.arc(0, 0, 1, startAngle, endAngle, antiClockwise);
+      context.restore();
+    }
+    function randomPhysics(opts) {
+      var radAngle = opts.angle * (Math.PI / 180);
+      var radSpread = opts.spread * (Math.PI / 180);
+      return {
+        x: opts.x,
+        y: opts.y,
+        wobble: Math.random() * 10,
+        wobbleSpeed: Math.min(0.11, Math.random() * 0.1 + 0.05),
+        velocity: opts.startVelocity * 0.5 + Math.random() * opts.startVelocity,
+        angle2D: -radAngle + (0.5 * radSpread - Math.random() * radSpread),
+        tiltAngle: (Math.random() * (0.75 - 0.25) + 0.25) * Math.PI,
+        color: opts.color,
+        shape: opts.shape,
+        tick: 0,
+        totalTicks: opts.ticks,
+        decay: opts.decay,
+        drift: opts.drift,
+        random: Math.random() + 2,
+        tiltSin: 0,
+        tiltCos: 0,
+        wobbleX: 0,
+        wobbleY: 0,
+        gravity: opts.gravity * 3,
+        ovalScalar: 0.6,
+        scalar: opts.scalar
+      };
+    }
+    function updateFetti(context, fetti) {
+      fetti.x += Math.cos(fetti.angle2D) * fetti.velocity + fetti.drift;
+      fetti.y += Math.sin(fetti.angle2D) * fetti.velocity + fetti.gravity;
+      fetti.wobble += fetti.wobbleSpeed;
+      fetti.velocity *= fetti.decay;
+      fetti.tiltAngle += 0.1;
+      fetti.tiltSin = Math.sin(fetti.tiltAngle);
+      fetti.tiltCos = Math.cos(fetti.tiltAngle);
+      fetti.random = Math.random() + 2;
+      fetti.wobbleX = fetti.x + 10 * fetti.scalar * Math.cos(fetti.wobble);
+      fetti.wobbleY = fetti.y + 10 * fetti.scalar * Math.sin(fetti.wobble);
+      var progress = fetti.tick++ / fetti.totalTicks;
+      var x1 = fetti.x + fetti.random * fetti.tiltCos;
+      var y1 = fetti.y + fetti.random * fetti.tiltSin;
+      var x2 = fetti.wobbleX + fetti.random * fetti.tiltCos;
+      var y2 = fetti.wobbleY + fetti.random * fetti.tiltSin;
+      context.fillStyle = "rgba(" + fetti.color.r + ", " + fetti.color.g + ", " + fetti.color.b + ", " + (1 - progress) + ")";
+      context.beginPath();
+      if (fetti.shape === "circle") {
+        context.ellipse ? context.ellipse(fetti.x, fetti.y, Math.abs(x2 - x1) * fetti.ovalScalar, Math.abs(y2 - y1) * fetti.ovalScalar, Math.PI / 10 * fetti.wobble, 0, 2 * Math.PI) : ellipse(context, fetti.x, fetti.y, Math.abs(x2 - x1) * fetti.ovalScalar, Math.abs(y2 - y1) * fetti.ovalScalar, Math.PI / 10 * fetti.wobble, 0, 2 * Math.PI);
+      } else {
+        context.moveTo(Math.floor(fetti.x), Math.floor(fetti.y));
+        context.lineTo(Math.floor(fetti.wobbleX), Math.floor(y1));
+        context.lineTo(Math.floor(x2), Math.floor(y2));
+        context.lineTo(Math.floor(x1), Math.floor(fetti.wobbleY));
+      }
+      context.closePath();
+      context.fill();
+      return fetti.tick < fetti.totalTicks;
+    }
+    function animate(canvas, fettis, resizer, size, done) {
+      var animatingFettis = fettis.slice();
+      var context = canvas.getContext("2d");
+      var animationFrame;
+      var destroy;
+      var prom = promise(function(resolve) {
+        function onDone() {
+          animationFrame = destroy = null;
+          context.clearRect(0, 0, size.width, size.height);
+          done();
+          resolve();
+        }
+        function update() {
+          if (isWorker && !(size.width === workerSize.width && size.height === workerSize.height)) {
+            size.width = canvas.width = workerSize.width;
+            size.height = canvas.height = workerSize.height;
+          }
+          if (!size.width && !size.height) {
+            resizer(canvas);
+            size.width = canvas.width;
+            size.height = canvas.height;
+          }
+          context.clearRect(0, 0, size.width, size.height);
+          animatingFettis = animatingFettis.filter(function(fetti) {
+            return updateFetti(context, fetti);
+          });
+          if (animatingFettis.length) {
+            animationFrame = raf2.frame(update);
+          } else {
+            onDone();
+          }
+        }
+        animationFrame = raf2.frame(update);
+        destroy = onDone;
+      });
+      return {
+        addFettis: function(fettis2) {
+          animatingFettis = animatingFettis.concat(fettis2);
+          return prom;
+        },
+        canvas,
+        promise: prom,
+        reset: function() {
+          if (animationFrame) {
+            raf2.cancel(animationFrame);
+          }
+          if (destroy) {
+            destroy();
+          }
+        }
+      };
+    }
+    function confettiCannon(canvas, globalOpts) {
+      var isLibCanvas = !canvas;
+      var allowResize = !!prop(globalOpts || {}, "resize");
+      var globalDisableForReducedMotion = prop(globalOpts, "disableForReducedMotion", Boolean);
+      var shouldUseWorker = canUseWorker && !!prop(globalOpts || {}, "useWorker");
+      var worker = shouldUseWorker ? getWorker() : null;
+      var resizer = isLibCanvas ? setCanvasWindowSize : setCanvasRectSize;
+      var initialized = canvas && worker ? !!canvas.__confetti_initialized : false;
+      var preferLessMotion = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion)").matches;
+      var animationObj;
+      function fireLocal(options, size, done) {
+        var particleCount = prop(options, "particleCount", onlyPositiveInt);
+        var angle = prop(options, "angle", Number);
+        var spread = prop(options, "spread", Number);
+        var startVelocity = prop(options, "startVelocity", Number);
+        var decay = prop(options, "decay", Number);
+        var gravity = prop(options, "gravity", Number);
+        var drift = prop(options, "drift", Number);
+        var colors = prop(options, "colors", colorsToRgb);
+        var ticks = prop(options, "ticks", Number);
+        var shapes = prop(options, "shapes");
+        var scalar = prop(options, "scalar");
+        var origin = getOrigin(options);
+        var temp = particleCount;
+        var fettis = [];
+        var startX = canvas.width * origin.x;
+        var startY = canvas.height * origin.y;
+        while (temp--) {
+          fettis.push(
+            randomPhysics({
+              x: startX,
+              y: startY,
+              angle,
+              spread,
+              startVelocity,
+              color: colors[temp % colors.length],
+              shape: shapes[randomInt(0, shapes.length)],
+              ticks,
+              decay,
+              gravity,
+              drift,
+              scalar
+            })
+          );
+        }
+        if (animationObj) {
+          return animationObj.addFettis(fettis);
+        }
+        animationObj = animate(canvas, fettis, resizer, size, done);
+        return animationObj.promise;
+      }
+      function fire(options) {
+        var disableForReducedMotion = globalDisableForReducedMotion || prop(options, "disableForReducedMotion", Boolean);
+        var zIndex = prop(options, "zIndex", Number);
+        if (disableForReducedMotion && preferLessMotion) {
+          return promise(function(resolve) {
+            resolve();
+          });
+        }
+        if (isLibCanvas && animationObj) {
+          canvas = animationObj.canvas;
+        } else if (isLibCanvas && !canvas) {
+          canvas = getCanvas(zIndex);
+          document.body.appendChild(canvas);
+        }
+        if (allowResize && !initialized) {
+          resizer(canvas);
+        }
+        var size = {
+          width: canvas.width,
+          height: canvas.height
+        };
+        if (worker && !initialized) {
+          worker.init(canvas);
+        }
+        initialized = true;
+        if (worker) {
+          canvas.__confetti_initialized = true;
+        }
+        function onResize() {
+          if (worker) {
+            var obj = {
+              getBoundingClientRect: function() {
+                if (!isLibCanvas) {
+                  return canvas.getBoundingClientRect();
+                }
+              }
+            };
+            resizer(obj);
+            worker.postMessage({
+              resize: {
+                width: obj.width,
+                height: obj.height
+              }
+            });
+            return;
+          }
+          size.width = size.height = null;
+        }
+        function done() {
+          animationObj = null;
+          if (allowResize) {
+            global.removeEventListener("resize", onResize);
+          }
+          if (isLibCanvas && canvas) {
+            document.body.removeChild(canvas);
+            canvas = null;
+            initialized = false;
+          }
+        }
+        if (allowResize) {
+          global.addEventListener("resize", onResize, false);
+        }
+        if (worker) {
+          return worker.fire(options, size, done);
+        }
+        return fireLocal(options, size, done);
+      }
+      fire.reset = function() {
+        if (worker) {
+          worker.reset();
+        }
+        if (animationObj) {
+          animationObj.reset();
+        }
+      };
+      return fire;
+    }
+    var defaultFire;
+    function getDefaultFire() {
+      if (!defaultFire) {
+        defaultFire = confettiCannon(null, { useWorker: true, resize: true });
+      }
+      return defaultFire;
+    }
+    module2.exports = function() {
+      return getDefaultFire().apply(this, arguments);
+    };
+    module2.exports.reset = function() {
+      getDefaultFire().reset();
+    };
+    module2.exports.create = confettiCannon;
+  })(function() {
+    if (typeof window !== "undefined") {
+      return window;
+    }
+    if (typeof self !== "undefined") {
+      return self;
+    }
+    return this || {};
+  }(), module, false);
+  var confetti_module_default = module.exports;
+  var create = module.exports.create;
+
+  // node_modules/donutty/dist/donutty.min.js
+  !function(o, t) {
+    var i, n = "http://www.w3.org/2000/svg";
+    function e(t2) {
+      return void 0 !== t2;
+    }
+    function s(t2) {
+      return parseFloat(t2, 10);
+    }
+    function r(t2) {
+      return e(t2) && (true === t2 || "true" === t2);
+    }
+    (i = t.Donutty = function(t2, i2) {
+      return t2 && "string" == typeof t2 ? this.$wrapper = o.querySelectorAll(t2)[0] : t2 instanceof window.HTMLElement ? this.$wrapper = t2 : (this.$wrapper = o.body, i2 = t2), this.$wrapper && (e(i2) || (i2 = this.getOptionsFromTag()), this.id = Math.random().toString(36).substr(2, 5), this.state = {}, this.options = i2 || {}, this.options.min = e(this.options.min) ? s(this.options.min) : 0, this.options.max = e(this.options.max) ? s(this.options.max) : 100, this.options.value = e(this.options.value) ? s(this.options.value) : 50, this.options.round = !e(this.options.round) || r(this.options.round), this.options.circle = !e(this.options.circle) || r(this.options.circle), this.options.padding = e(this.options.padding) ? s(this.options.padding) : 4, this.options.radius = s(this.options.radius) || 50, this.options.thickness = s(this.options.thickness) || 10, this.options.bg = this.options.bg || "rgba(70, 130, 180, 0.15)", this.options.color = this.options.color || "mediumslateblue", this.options.transition = this.options.transition || "all 1.2s cubic-bezier(0.57, 0.13, 0.18, 0.98)", this.options.text = !!e(this.options.text) && this.options.text, this.options.title = e(this.options.title) ? this.options.title : function() {
+        return "Donut Chart Graphic";
+      }, this.options.desc = e(this.options.desc) ? this.options.desc : function(t3) {
+        return "A donut chart ranging from " + t3.min + " to " + t3.max + " with a current value of " + t3.value + ".";
+      }, this.options.dir = !!e(this.options.dir) && this.options.dir, this.options.dir || (this.options.dir = this.$wrapper.dir), this.options.dir || (this.options.dir = document.body.parentElement.dir), this.init()), this;
+    }).prototype.getOptionsFromTag = function() {
+      return JSON.parse(JSON.stringify(this.$wrapper.dataset));
+    }, i.prototype.init = function() {
+      var t2;
+      return (this.$wrapper.donutty = this).createState(), t2 = this.getDashValues(), this.createSvg(), this.createBg(t2), this.createDonut(t2), this.createText(), this.createAccessibility(), this.insertFragments(t2), this;
+    }, i.prototype.createState = function() {
+      return this.state.min = this.options.min, this.state.max = this.options.max, this.state.value = this.options.value, this.state.bg = this.options.bg, this.state.color = this.options.color, this;
+    }, i.prototype.createText = function() {
+      return "function" == typeof this.options.text && (this.$text = o.createElement("span"), this.$text.setAttribute("class", "donut-text"), this.$text.style.opacity = 0, this.updateText()), this;
+    }, i.prototype.createAccessibility = function() {
+      return this.$title = o.createElementNS(n, "title"), this.$title.setAttribute("id", "chartTitle-" + this.id), this.$title.setAttribute("class", "donut-title"), this.$desc = o.createElementNS(n, "desc"), this.$desc.setAttribute("id", "chartDesc-" + this.id), this.$desc.setAttribute("class", "donut-desc"), this.updateAccessibility(), this;
+    }, i.prototype.createBg = function(t2) {
+      return this.$bg = o.createElementNS(n, "circle"), this.$bg.setAttribute("cx", "50%"), this.$bg.setAttribute("cy", "50%"), this.$bg.setAttribute("r", this.options.radius), this.$bg.setAttribute("fill", "transparent"), this.$bg.setAttribute("stroke", this.state.bg), this.$bg.setAttribute("stroke-width", this.options.thickness + this.options.padding), this.$bg.setAttribute("stroke-dasharray", t2.full * t2.multiplier), this.$bg.setAttribute("class", "donut-bg"), this.options.round && this.$bg.setAttribute("stroke-linecap", "round"), this;
+    }, i.prototype.createDonut = function(t2) {
+      return this.$donut = o.createElementNS(n, "circle"), this.$donut.setAttribute("fill", "transparent"), this.$donut.setAttribute("cx", "50%"), this.$donut.setAttribute("cy", "50%"), this.$donut.setAttribute("r", this.options.radius), this.$donut.setAttribute("stroke", this.state.color), this.$donut.setAttribute("stroke-width", this.options.thickness), this.$donut.setAttribute("stroke-dashoffset", t2.full), this.$donut.setAttribute("stroke-dasharray", t2.full), this.$donut.setAttribute("class", "donut-fill"), this.$donut.style.opacity = 0, this.options.round && this.$donut.setAttribute("stroke-linecap", "round"), this;
+    }, i.prototype.createSvg = function() {
+      var t2 = 2 * this.options.radius + this.options.thickness + 1, i2 = this.options.round ? this.options.thickness / 3 : 0, s2 = this.options.circle ? 90 + i2 : -225, e2 = "rtl" === this.options.dir ? "-1, 1" : "1, 1";
+      return 0 <= this.options.padding && (t2 += this.options.padding), this.$html = o.createDocumentFragment(), this.$svg = o.createElementNS(n, "svg"), this.$svg.setAttribute("xmlns", n), this.$svg.setAttribute("viewbox", "0 0 " + t2 + " " + t2), this.$svg.setAttribute("width", "100%"), this.$svg.setAttribute("style", "transform: scale(" + e2 + ") rotate(" + s2 + "deg)"), this.$svg.setAttribute("preserveAspectRatio", "xMidYMid meet"), this.$svg.setAttribute("class", "donut"), this.$svg.setAttribute("role", "img"), this.$svg.setAttribute("aria-labelledby", "chartTitle-" + this.id + " chartDesc-" + this.id), this.$svg.setAttribute("role", "img"), this;
+    }, i.prototype.insertFragments = function(t2) {
+      this.$svg.appendChild(this.$title), this.$svg.appendChild(this.$desc), this.$svg.appendChild(this.$bg), this.$svg.appendChild(this.$donut), this.$html.appendChild(this.$svg), this.$text && this.$html.appendChild(this.$text), this.$wrapper.appendChild(this.$html), this.$wrapper.innerHTML = this.$wrapper.innerHTML, this.$svg = this.$wrapper.querySelector(".donut"), this.$bg = this.$wrapper.querySelector(".donut-bg"), this.$donut = this.$wrapper.querySelector(".donut-fill"), this.$title = this.$wrapper.querySelector(".donut-title"), this.$desc = this.$wrapper.querySelector(".donut-desc"), this.$text && (this.$text = this.$wrapper.querySelector(".donut-text")), this.animate(t2.fill, t2.full);
+    }, i.prototype.getDashValues = function() {
+      var t2, i2, s2, e2;
+      return e2 = this.options.circle ? 1 : 0.75, s2 = (t2 = 2 * Math.PI * this.options.radius) - t2 * e2 / 100 * (i2 = (this.state.value - this.state.min) / (this.state.max - this.state.min) * 100), this.options.round && this.options.circle && i2 < 100 && s2 < this.options.thickness && (s2 = this.options.thickness), { fill: s2, full: t2, multiplier: e2 };
+    }, i.prototype.animate = function(t2, i2) {
+      var s2 = this;
+      this.$bg.style.transition = this.options.transition, this.$donut.style.transition = this.options.transition, this.$text && (this.$text.style.transition = this.options.transition), window.setTimeout(function() {
+        s2.$bg.setAttribute("stroke", s2.state.bg), s2.$bg.style.opacity = 1, s2.$donut.setAttribute("stroke-dashoffset", t2), s2.$donut.setAttribute("stroke-dasharray", i2), s2.$donut.setAttribute("stroke", s2.state.color), s2.$donut.style.opacity = 1, s2.$text && (s2.$text.style.opacity = 1);
+      }, 16);
+    }, i.prototype.updateText = function() {
+      return "function" == typeof this.options.text && (this.$text.innerHTML = this.options.text(this.state)), this;
+    }, i.prototype.updateAccessibility = function() {
+      return "function" == typeof this.options.title ? this.$title.innerHTML = this.options.title(this.state) : this.$title.innerHTML = this.options.title, "function" == typeof this.options.desc ? this.$desc.innerHTML = this.options.desc(this.state) : this.$desc.innerHTML = this.options.desc, this;
+    }, i.prototype.set = function(t2, i2) {
+      var s2;
+      return e(t2) && e(i2) && (this.state[t2] = i2, s2 = this.getDashValues(), this.updateText(), this.updateAccessibility(), this.animate(s2.fill, s2.full)), this;
+    }, i.prototype.setState = function(t2) {
+      var i2;
+      return e(t2.value) && (this.state.value = t2.value), e(t2.min) && (this.state.min = t2.min), e(t2.max) && (this.state.max = t2.max), e(t2.bg) && (this.state.bg = t2.bg), e(t2.color) && (this.state.color = t2.color), i2 = this.getDashValues(), this.updateText(), this.updateAccessibility(), this.animate(i2.fill, i2.full), this;
+    };
+  }(document, window), function(i) {
+    var t = document, s = function() {
+      var t2 = document.querySelectorAll("[data-donutty]");
+      Array.prototype.forEach.call(t2, function(t3) {
+        new i(t3);
+      });
+    };
+    "complete" === t.readyState || "loading" !== t.readyState && !t.documentElement.doScroll ? s() : t.addEventListener("DOMContentLoaded", s);
+  }(Donutty);
+
+  // node_modules/@splidejs/splide/dist/js/splide.esm.js
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor)
+        descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps)
+      _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps)
+      _defineProperties(Constructor, staticProps);
+    Object.defineProperty(Constructor, "prototype", { writable: false });
+    return Constructor;
+  }
+  var MEDIA_PREFERS_REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+  var CREATED = 1;
+  var MOUNTED = 2;
+  var IDLE = 3;
+  var MOVING = 4;
+  var SCROLLING = 5;
+  var DRAGGING = 6;
+  var DESTROYED = 7;
+  var STATES = {
+    CREATED,
+    MOUNTED,
+    IDLE,
+    MOVING,
+    SCROLLING,
+    DRAGGING,
+    DESTROYED
+  };
+  function empty(array) {
+    array.length = 0;
+  }
+  function slice(arrayLike, start, end) {
+    return Array.prototype.slice.call(arrayLike, start, end);
+  }
+  function apply(func) {
+    return func.bind.apply(func, [null].concat(slice(arguments, 1)));
+  }
+  var nextTick = setTimeout;
+  var noop = function noop2() {
+  };
+  function raf(func) {
+    return requestAnimationFrame(func);
+  }
+  function typeOf(type, subject) {
+    return typeof subject === type;
+  }
+  function isObject(subject) {
+    return !isNull(subject) && typeOf("object", subject);
+  }
+  var isArray = Array.isArray;
+  var isFunction = apply(typeOf, "function");
+  var isString = apply(typeOf, "string");
+  var isUndefined = apply(typeOf, "undefined");
+  function isNull(subject) {
+    return subject === null;
+  }
+  function isHTMLElement(subject) {
+    return subject instanceof HTMLElement;
+  }
+  function toArray(value) {
+    return isArray(value) ? value : [value];
+  }
+  function forEach(values, iteratee) {
+    toArray(values).forEach(iteratee);
+  }
+  function includes(array, value) {
+    return array.indexOf(value) > -1;
+  }
+  function push(array, items) {
+    array.push.apply(array, toArray(items));
+    return array;
+  }
+  function toggleClass(elm, classes, add) {
+    if (elm) {
+      forEach(classes, function(name2) {
+        if (name2) {
+          elm.classList[add ? "add" : "remove"](name2);
+        }
+      });
+    }
+  }
+  function addClass(elm, classes) {
+    toggleClass(elm, isString(classes) ? classes.split(" ") : classes, true);
+  }
+  function append(parent, children2) {
+    forEach(children2, parent.appendChild.bind(parent));
+  }
+  function before(nodes, ref) {
+    forEach(nodes, function(node) {
+      var parent = (ref || node).parentNode;
+      if (parent) {
+        parent.insertBefore(node, ref);
+      }
+    });
+  }
+  function matches(elm, selector) {
+    return isHTMLElement(elm) && (elm["msMatchesSelector"] || elm.matches).call(elm, selector);
+  }
+  function children(parent, selector) {
+    var children2 = parent ? slice(parent.children) : [];
+    return selector ? children2.filter(function(child2) {
+      return matches(child2, selector);
+    }) : children2;
+  }
+  function child(parent, selector) {
+    return selector ? children(parent, selector)[0] : parent.firstElementChild;
+  }
+  var ownKeys = Object.keys;
+  function forOwn(object, iteratee, right) {
+    if (object) {
+      var keys = ownKeys(object);
+      keys = right ? keys.reverse() : keys;
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (key !== "__proto__") {
+          if (iteratee(object[key], key) === false) {
+            break;
+          }
+        }
+      }
+    }
+    return object;
+  }
+  function assign(object) {
+    slice(arguments, 1).forEach(function(source) {
+      forOwn(source, function(value, key) {
+        object[key] = source[key];
+      });
+    });
+    return object;
+  }
+  function merge(object) {
+    slice(arguments, 1).forEach(function(source) {
+      forOwn(source, function(value, key) {
+        if (isArray(value)) {
+          object[key] = value.slice();
+        } else if (isObject(value)) {
+          object[key] = merge({}, isObject(object[key]) ? object[key] : {}, value);
+        } else {
+          object[key] = value;
+        }
+      });
+    });
+    return object;
+  }
+  function omit(object, keys) {
+    toArray(keys || ownKeys(object)).forEach(function(key) {
+      delete object[key];
+    });
+  }
+  function removeAttribute(elms, attrs) {
+    forEach(elms, function(elm) {
+      forEach(attrs, function(attr) {
+        elm && elm.removeAttribute(attr);
+      });
+    });
+  }
+  function setAttribute(elms, attrs, value) {
+    if (isObject(attrs)) {
+      forOwn(attrs, function(value2, name2) {
+        setAttribute(elms, name2, value2);
+      });
+    } else {
+      forEach(elms, function(elm) {
+        isNull(value) || value === "" ? removeAttribute(elm, attrs) : elm.setAttribute(attrs, String(value));
+      });
+    }
+  }
+  function create2(tag, attrs, parent) {
+    var elm = document.createElement(tag);
+    if (attrs) {
+      isString(attrs) ? addClass(elm, attrs) : setAttribute(elm, attrs);
+    }
+    parent && append(parent, elm);
+    return elm;
+  }
+  function style(elm, prop, value) {
+    if (isUndefined(value)) {
+      return getComputedStyle(elm)[prop];
+    }
+    if (!isNull(value)) {
+      elm.style[prop] = "" + value;
+    }
+  }
+  function display(elm, display2) {
+    style(elm, "display", display2);
+  }
+  function focus(elm) {
+    elm["setActive"] && elm["setActive"]() || elm.focus({
+      preventScroll: true
+    });
+  }
+  function getAttribute(elm, attr) {
+    return elm.getAttribute(attr);
+  }
+  function hasClass(elm, className) {
+    return elm && elm.classList.contains(className);
+  }
+  function rect(target) {
+    return target.getBoundingClientRect();
+  }
+  function remove(nodes) {
+    forEach(nodes, function(node) {
+      if (node && node.parentNode) {
+        node.parentNode.removeChild(node);
+      }
+    });
+  }
+  function parseHtml(html) {
+    return child(new DOMParser().parseFromString(html, "text/html").body);
+  }
+  function prevent(e, stopPropagation) {
+    e.preventDefault();
+    if (stopPropagation) {
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
+  }
+  function query(parent, selector) {
+    return parent && parent.querySelector(selector);
+  }
+  function queryAll(parent, selector) {
+    return selector ? slice(parent.querySelectorAll(selector)) : [];
+  }
+  function removeClass(elm, classes) {
+    toggleClass(elm, classes, false);
+  }
+  function timeOf(e) {
+    return e.timeStamp;
+  }
+  function unit(value) {
+    return isString(value) ? value : value ? value + "px" : "";
+  }
+  var PROJECT_CODE = "splide";
+  var DATA_ATTRIBUTE = "data-" + PROJECT_CODE;
+  function assert(condition, message) {
+    if (!condition) {
+      throw new Error("[" + PROJECT_CODE + "] " + (message || ""));
+    }
+  }
+  var min = Math.min;
+  var max = Math.max;
+  var floor = Math.floor;
+  var ceil = Math.ceil;
+  var abs = Math.abs;
+  function approximatelyEqual(x, y, epsilon) {
+    return abs(x - y) < epsilon;
+  }
+  function between(number, minOrMax, maxOrMin, exclusive) {
+    var minimum = min(minOrMax, maxOrMin);
+    var maximum = max(minOrMax, maxOrMin);
+    return exclusive ? minimum < number && number < maximum : minimum <= number && number <= maximum;
+  }
+  function clamp(number, x, y) {
+    var minimum = min(x, y);
+    var maximum = max(x, y);
+    return min(max(minimum, number), maximum);
+  }
+  function sign(x) {
+    return +(x > 0) - +(x < 0);
+  }
+  function format(string, replacements) {
+    forEach(replacements, function(replacement) {
+      string = string.replace("%s", "" + replacement);
+    });
+    return string;
+  }
+  function pad(number) {
+    return number < 10 ? "0" + number : "" + number;
+  }
+  var ids = {};
+  function uniqueId(prefix) {
+    return "" + prefix + pad(ids[prefix] = (ids[prefix] || 0) + 1);
+  }
+  function EventBinder() {
+    var listeners = [];
+    function bind(targets, events, callback, options) {
+      forEachEvent(targets, events, function(target, event, namespace) {
+        var isEventTarget = "addEventListener" in target;
+        var remover = isEventTarget ? target.removeEventListener.bind(target, event, callback, options) : target["removeListener"].bind(target, callback);
+        isEventTarget ? target.addEventListener(event, callback, options) : target["addListener"](callback);
+        listeners.push([target, event, namespace, callback, remover]);
+      });
+    }
+    function unbind(targets, events, callback) {
+      forEachEvent(targets, events, function(target, event, namespace) {
+        listeners = listeners.filter(function(listener) {
+          if (listener[0] === target && listener[1] === event && listener[2] === namespace && (!callback || listener[3] === callback)) {
+            listener[4]();
+            return false;
+          }
+          return true;
+        });
+      });
+    }
+    function dispatch(target, type, detail) {
+      var e;
+      var bubbles = true;
+      if (typeof CustomEvent === "function") {
+        e = new CustomEvent(type, {
+          bubbles,
+          detail
+        });
+      } else {
+        e = document.createEvent("CustomEvent");
+        e.initCustomEvent(type, bubbles, false, detail);
+      }
+      target.dispatchEvent(e);
+      return e;
+    }
+    function forEachEvent(targets, events, iteratee) {
+      forEach(targets, function(target) {
+        target && forEach(events, function(events2) {
+          events2.split(" ").forEach(function(eventNS) {
+            var fragment = eventNS.split(".");
+            iteratee(target, fragment[0], fragment[1]);
+          });
+        });
+      });
+    }
+    function destroy() {
+      listeners.forEach(function(data) {
+        data[4]();
+      });
+      empty(listeners);
+    }
+    return {
+      bind,
+      unbind,
+      dispatch,
+      destroy
+    };
+  }
+  var EVENT_MOUNTED = "mounted";
+  var EVENT_READY = "ready";
+  var EVENT_MOVE = "move";
+  var EVENT_MOVED = "moved";
+  var EVENT_SHIFTED = "shifted";
+  var EVENT_CLICK = "click";
+  var EVENT_ACTIVE = "active";
+  var EVENT_INACTIVE = "inactive";
+  var EVENT_VISIBLE = "visible";
+  var EVENT_HIDDEN = "hidden";
+  var EVENT_SLIDE_KEYDOWN = "slide:keydown";
+  var EVENT_REFRESH = "refresh";
+  var EVENT_UPDATED = "updated";
+  var EVENT_RESIZE = "resize";
+  var EVENT_RESIZED = "resized";
+  var EVENT_DRAG = "drag";
+  var EVENT_DRAGGING = "dragging";
+  var EVENT_DRAGGED = "dragged";
+  var EVENT_SCROLL = "scroll";
+  var EVENT_SCROLLED = "scrolled";
+  var EVENT_DESTROY = "destroy";
+  var EVENT_ARROWS_MOUNTED = "arrows:mounted";
+  var EVENT_ARROWS_UPDATED = "arrows:updated";
+  var EVENT_PAGINATION_MOUNTED = "pagination:mounted";
+  var EVENT_PAGINATION_UPDATED = "pagination:updated";
+  var EVENT_NAVIGATION_MOUNTED = "navigation:mounted";
+  var EVENT_AUTOPLAY_PLAY = "autoplay:play";
+  var EVENT_AUTOPLAY_PLAYING = "autoplay:playing";
+  var EVENT_AUTOPLAY_PAUSE = "autoplay:pause";
+  var EVENT_LAZYLOAD_LOADED = "lazyload:loaded";
+  function EventInterface(Splide2) {
+    var bus = Splide2 ? Splide2.event.bus : document.createDocumentFragment();
+    var binder = EventBinder();
+    function on(events, callback) {
+      binder.bind(bus, toArray(events).join(" "), function(e) {
+        callback.apply(callback, isArray(e.detail) ? e.detail : []);
+      });
+    }
+    function emit(event) {
+      binder.dispatch(bus, event, slice(arguments, 1));
+    }
+    if (Splide2) {
+      Splide2.event.on(EVENT_DESTROY, binder.destroy);
+    }
+    return assign(binder, {
+      bus,
+      on,
+      off: apply(binder.unbind, bus),
+      emit
+    });
+  }
+  function RequestInterval(interval, onInterval, onUpdate, limit) {
+    var now = Date.now;
+    var startTime;
+    var rate = 0;
+    var id;
+    var paused = true;
+    var count = 0;
+    function update() {
+      if (!paused) {
+        rate = interval ? min((now() - startTime) / interval, 1) : 1;
+        onUpdate && onUpdate(rate);
+        if (rate >= 1) {
+          onInterval();
+          startTime = now();
+          if (limit && ++count >= limit) {
+            return pause();
+          }
+        }
+        raf(update);
+      }
+    }
+    function start(resume) {
+      !resume && cancel();
+      startTime = now() - (resume ? rate * interval : 0);
+      paused = false;
+      raf(update);
+    }
+    function pause() {
+      paused = true;
+    }
+    function rewind() {
+      startTime = now();
+      rate = 0;
+      if (onUpdate) {
+        onUpdate(rate);
+      }
+    }
+    function cancel() {
+      id && cancelAnimationFrame(id);
+      rate = 0;
+      id = 0;
+      paused = true;
+    }
+    function set(time) {
+      interval = time;
+    }
+    function isPaused() {
+      return paused;
+    }
+    return {
+      start,
+      rewind,
+      pause,
+      cancel,
+      set,
+      isPaused
+    };
+  }
+  function State(initialState) {
+    var state = initialState;
+    function set(value) {
+      state = value;
+    }
+    function is(states) {
+      return includes(toArray(states), state);
+    }
+    return {
+      set,
+      is
+    };
+  }
+  function Throttle(func, duration) {
+    var interval;
+    function throttled() {
+      if (!interval) {
+        interval = RequestInterval(duration || 0, function() {
+          func();
+          interval = null;
+        }, null, 1);
+        interval.start();
+      }
+    }
+    return throttled;
+  }
+  function Media(Splide2, Components2, options) {
+    var state = Splide2.state;
+    var breakpoints = options.breakpoints || {};
+    var reducedMotion = options.reducedMotion || {};
+    var binder = EventBinder();
+    var queries = [];
+    function setup() {
+      var isMin = options.mediaQuery === "min";
+      ownKeys(breakpoints).sort(function(n, m) {
+        return isMin ? +n - +m : +m - +n;
+      }).forEach(function(key) {
+        register(breakpoints[key], "(" + (isMin ? "min" : "max") + "-width:" + key + "px)");
+      });
+      register(reducedMotion, MEDIA_PREFERS_REDUCED_MOTION);
+      update();
+    }
+    function destroy(completely) {
+      if (completely) {
+        binder.destroy();
+      }
+    }
+    function register(options2, query2) {
+      var queryList = matchMedia(query2);
+      binder.bind(queryList, "change", update);
+      queries.push([options2, queryList]);
+    }
+    function update() {
+      var destroyed = state.is(DESTROYED);
+      var direction = options.direction;
+      var merged = queries.reduce(function(merged2, entry) {
+        return merge(merged2, entry[1].matches ? entry[0] : {});
+      }, {});
+      omit(options);
+      set(merged);
+      if (options.destroy) {
+        Splide2.destroy(options.destroy === "completely");
+      } else if (destroyed) {
+        destroy(true);
+        Splide2.mount();
+      } else {
+        direction !== options.direction && Splide2.refresh();
+      }
+    }
+    function reduce(enable) {
+      if (matchMedia(MEDIA_PREFERS_REDUCED_MOTION).matches) {
+        enable ? merge(options, reducedMotion) : omit(options, ownKeys(reducedMotion));
+      }
+    }
+    function set(opts, user) {
+      merge(options, opts);
+      user && merge(Object.getPrototypeOf(options), opts);
+      if (!state.is(CREATED)) {
+        Splide2.emit(EVENT_UPDATED, options);
+      }
+    }
+    return {
+      setup,
+      destroy,
+      reduce,
+      set
+    };
+  }
+  var ARROW = "Arrow";
+  var ARROW_LEFT = ARROW + "Left";
+  var ARROW_RIGHT = ARROW + "Right";
+  var ARROW_UP = ARROW + "Up";
+  var ARROW_DOWN = ARROW + "Down";
+  var RTL = "rtl";
+  var TTB = "ttb";
+  var ORIENTATION_MAP = {
+    width: ["height"],
+    left: ["top", "right"],
+    right: ["bottom", "left"],
+    x: ["y"],
+    X: ["Y"],
+    Y: ["X"],
+    ArrowLeft: [ARROW_UP, ARROW_RIGHT],
+    ArrowRight: [ARROW_DOWN, ARROW_LEFT]
+  };
+  function Direction(Splide2, Components2, options) {
+    function resolve(prop, axisOnly, direction) {
+      direction = direction || options.direction;
+      var index = direction === RTL && !axisOnly ? 1 : direction === TTB ? 0 : -1;
+      return ORIENTATION_MAP[prop] && ORIENTATION_MAP[prop][index] || prop.replace(/width|left|right/i, function(match, offset) {
+        var replacement = ORIENTATION_MAP[match.toLowerCase()][index] || match;
+        return offset > 0 ? replacement.charAt(0).toUpperCase() + replacement.slice(1) : replacement;
+      });
+    }
+    function orient(value) {
+      return value * (options.direction === RTL ? 1 : -1);
+    }
+    return {
+      resolve,
+      orient
+    };
+  }
+  var ROLE = "role";
+  var TAB_INDEX = "tabindex";
+  var DISABLED = "disabled";
+  var ARIA_PREFIX = "aria-";
+  var ARIA_CONTROLS = ARIA_PREFIX + "controls";
+  var ARIA_CURRENT = ARIA_PREFIX + "current";
+  var ARIA_SELECTED = ARIA_PREFIX + "selected";
+  var ARIA_LABEL = ARIA_PREFIX + "label";
+  var ARIA_LABELLEDBY = ARIA_PREFIX + "labelledby";
+  var ARIA_HIDDEN = ARIA_PREFIX + "hidden";
+  var ARIA_ORIENTATION = ARIA_PREFIX + "orientation";
+  var ARIA_ROLEDESCRIPTION = ARIA_PREFIX + "roledescription";
+  var ARIA_LIVE = ARIA_PREFIX + "live";
+  var ARIA_BUSY = ARIA_PREFIX + "busy";
+  var ARIA_ATOMIC = ARIA_PREFIX + "atomic";
+  var ALL_ATTRIBUTES = [ROLE, TAB_INDEX, DISABLED, ARIA_CONTROLS, ARIA_CURRENT, ARIA_LABEL, ARIA_LABELLEDBY, ARIA_HIDDEN, ARIA_ORIENTATION, ARIA_ROLEDESCRIPTION];
+  var CLASS_ROOT = PROJECT_CODE;
+  var CLASS_TRACK = PROJECT_CODE + "__track";
+  var CLASS_LIST = PROJECT_CODE + "__list";
+  var CLASS_SLIDE = PROJECT_CODE + "__slide";
+  var CLASS_CLONE = CLASS_SLIDE + "--clone";
+  var CLASS_CONTAINER = CLASS_SLIDE + "__container";
+  var CLASS_ARROWS = PROJECT_CODE + "__arrows";
+  var CLASS_ARROW = PROJECT_CODE + "__arrow";
+  var CLASS_ARROW_PREV = CLASS_ARROW + "--prev";
+  var CLASS_ARROW_NEXT = CLASS_ARROW + "--next";
+  var CLASS_PAGINATION = PROJECT_CODE + "__pagination";
+  var CLASS_PAGINATION_PAGE = CLASS_PAGINATION + "__page";
+  var CLASS_PROGRESS = PROJECT_CODE + "__progress";
+  var CLASS_PROGRESS_BAR = CLASS_PROGRESS + "__bar";
+  var CLASS_TOGGLE = PROJECT_CODE + "__toggle";
+  var CLASS_TOGGLE_PLAY = CLASS_TOGGLE + "__play";
+  var CLASS_TOGGLE_PAUSE = CLASS_TOGGLE + "__pause";
+  var CLASS_SPINNER = PROJECT_CODE + "__spinner";
+  var CLASS_SR = PROJECT_CODE + "__sr";
+  var CLASS_INITIALIZED = "is-initialized";
+  var CLASS_ACTIVE = "is-active";
+  var CLASS_PREV = "is-prev";
+  var CLASS_NEXT = "is-next";
+  var CLASS_VISIBLE = "is-visible";
+  var CLASS_LOADING = "is-loading";
+  var CLASS_FOCUS_IN = "is-focus-in";
+  var STATUS_CLASSES = [CLASS_ACTIVE, CLASS_VISIBLE, CLASS_PREV, CLASS_NEXT, CLASS_LOADING, CLASS_FOCUS_IN];
+  var CLASSES = {
+    slide: CLASS_SLIDE,
+    clone: CLASS_CLONE,
+    arrows: CLASS_ARROWS,
+    arrow: CLASS_ARROW,
+    prev: CLASS_ARROW_PREV,
+    next: CLASS_ARROW_NEXT,
+    pagination: CLASS_PAGINATION,
+    page: CLASS_PAGINATION_PAGE,
+    spinner: CLASS_SPINNER
+  };
+  function closest(from, selector) {
+    if (isFunction(from.closest)) {
+      return from.closest(selector);
+    }
+    var elm = from;
+    while (elm && elm.nodeType === 1) {
+      if (matches(elm, selector)) {
+        break;
+      }
+      elm = elm.parentElement;
+    }
+    return elm;
+  }
+  var FRICTION = 5;
+  var LOG_INTERVAL = 200;
+  var POINTER_DOWN_EVENTS = "touchstart mousedown";
+  var POINTER_MOVE_EVENTS = "touchmove mousemove";
+  var POINTER_UP_EVENTS = "touchend touchcancel mouseup click";
+  function Elements(Splide2, Components2, options) {
+    var _EventInterface = EventInterface(Splide2), on = _EventInterface.on, bind = _EventInterface.bind;
+    var root = Splide2.root;
+    var i18n = options.i18n;
+    var elements = {};
+    var slides = [];
+    var rootClasses = [];
+    var trackClasses = [];
+    var track;
+    var list;
+    var isUsingKey;
+    function setup() {
+      collect();
+      init();
+      update();
+    }
+    function mount() {
+      on(EVENT_REFRESH, destroy);
+      on(EVENT_REFRESH, setup);
+      on(EVENT_UPDATED, update);
+      bind(document, POINTER_DOWN_EVENTS + " keydown", function(e) {
+        isUsingKey = e.type === "keydown";
+      }, {
+        capture: true
+      });
+      bind(root, "focusin", function() {
+        toggleClass(root, CLASS_FOCUS_IN, !!isUsingKey);
+      });
+    }
+    function destroy(completely) {
+      var attrs = ALL_ATTRIBUTES.concat("style");
+      empty(slides);
+      removeClass(root, rootClasses);
+      removeClass(track, trackClasses);
+      removeAttribute([track, list], attrs);
+      removeAttribute(root, completely ? attrs : ["style", ARIA_ROLEDESCRIPTION]);
+    }
+    function update() {
+      removeClass(root, rootClasses);
+      removeClass(track, trackClasses);
+      rootClasses = getClasses(CLASS_ROOT);
+      trackClasses = getClasses(CLASS_TRACK);
+      addClass(root, rootClasses);
+      addClass(track, trackClasses);
+      setAttribute(root, ARIA_LABEL, options.label);
+      setAttribute(root, ARIA_LABELLEDBY, options.labelledby);
+    }
+    function collect() {
+      track = find("." + CLASS_TRACK);
+      list = child(track, "." + CLASS_LIST);
+      assert(track && list, "A track/list element is missing.");
+      push(slides, children(list, "." + CLASS_SLIDE + ":not(." + CLASS_CLONE + ")"));
+      forOwn({
+        arrows: CLASS_ARROWS,
+        pagination: CLASS_PAGINATION,
+        prev: CLASS_ARROW_PREV,
+        next: CLASS_ARROW_NEXT,
+        bar: CLASS_PROGRESS_BAR,
+        toggle: CLASS_TOGGLE
+      }, function(className, key) {
+        elements[key] = find("." + className);
+      });
+      assign(elements, {
+        root,
+        track,
+        list,
+        slides
+      });
+    }
+    function init() {
+      var id = root.id || uniqueId(PROJECT_CODE);
+      var role = options.role;
+      root.id = id;
+      track.id = track.id || id + "-track";
+      list.id = list.id || id + "-list";
+      if (!getAttribute(root, ROLE) && root.tagName !== "SECTION" && role) {
+        setAttribute(root, ROLE, role);
+      }
+      setAttribute(root, ARIA_ROLEDESCRIPTION, i18n.carousel);
+      setAttribute(list, ROLE, "presentation");
+    }
+    function find(selector) {
+      var elm = query(root, selector);
+      return elm && closest(elm, "." + CLASS_ROOT) === root ? elm : void 0;
+    }
+    function getClasses(base) {
+      return [base + "--" + options.type, base + "--" + options.direction, options.drag && base + "--draggable", options.isNavigation && base + "--nav", base === CLASS_ROOT && CLASS_ACTIVE];
+    }
+    return assign(elements, {
+      setup,
+      mount,
+      destroy
+    });
+  }
+  var SLIDE = "slide";
+  var LOOP = "loop";
+  var FADE = "fade";
+  function Slide$1(Splide2, index, slideIndex, slide) {
+    var event = EventInterface(Splide2);
+    var on = event.on, emit = event.emit, bind = event.bind;
+    var Components = Splide2.Components, root = Splide2.root, options = Splide2.options;
+    var isNavigation = options.isNavigation, updateOnMove = options.updateOnMove, i18n = options.i18n, pagination = options.pagination, slideFocus = options.slideFocus;
+    var resolve = Components.Direction.resolve;
+    var styles = getAttribute(slide, "style");
+    var label = getAttribute(slide, ARIA_LABEL);
+    var isClone = slideIndex > -1;
+    var container = child(slide, "." + CLASS_CONTAINER);
+    var focusableNodes = queryAll(slide, options.focusableNodes || "");
+    var destroyed;
+    function mount() {
+      if (!isClone) {
+        slide.id = root.id + "-slide" + pad(index + 1);
+        setAttribute(slide, ROLE, pagination ? "tabpanel" : "group");
+        setAttribute(slide, ARIA_ROLEDESCRIPTION, i18n.slide);
+        setAttribute(slide, ARIA_LABEL, label || format(i18n.slideLabel, [index + 1, Splide2.length]));
+      }
+      listen();
+    }
+    function listen() {
+      bind(slide, "click", apply(emit, EVENT_CLICK, self2));
+      bind(slide, "keydown", apply(emit, EVENT_SLIDE_KEYDOWN, self2));
+      on([EVENT_MOVED, EVENT_SHIFTED, EVENT_SCROLLED], update);
+      on(EVENT_NAVIGATION_MOUNTED, initNavigation);
+      if (updateOnMove) {
+        on(EVENT_MOVE, onMove);
+      }
+    }
+    function destroy() {
+      destroyed = true;
+      event.destroy();
+      removeClass(slide, STATUS_CLASSES);
+      removeAttribute(slide, ALL_ATTRIBUTES);
+      setAttribute(slide, "style", styles);
+      setAttribute(slide, ARIA_LABEL, label || "");
+    }
+    function initNavigation() {
+      var controls = Splide2.splides.map(function(target) {
+        var Slide2 = target.splide.Components.Slides.getAt(index);
+        return Slide2 ? Slide2.slide.id : "";
+      }).join(" ");
+      setAttribute(slide, ARIA_LABEL, format(i18n.slideX, (isClone ? slideIndex : index) + 1));
+      setAttribute(slide, ARIA_CONTROLS, controls);
+      setAttribute(slide, ROLE, slideFocus ? "button" : "");
+      slideFocus && removeAttribute(slide, ARIA_ROLEDESCRIPTION);
+    }
+    function onMove() {
+      if (!destroyed) {
+        update();
+      }
+    }
+    function update() {
+      if (!destroyed) {
+        var curr = Splide2.index;
+        updateActivity();
+        updateVisibility();
+        toggleClass(slide, CLASS_PREV, index === curr - 1);
+        toggleClass(slide, CLASS_NEXT, index === curr + 1);
+      }
+    }
+    function updateActivity() {
+      var active = isActive();
+      if (active !== hasClass(slide, CLASS_ACTIVE)) {
+        toggleClass(slide, CLASS_ACTIVE, active);
+        setAttribute(slide, ARIA_CURRENT, isNavigation && active || "");
+        emit(active ? EVENT_ACTIVE : EVENT_INACTIVE, self2);
+      }
+    }
+    function updateVisibility() {
+      var visible = isVisible();
+      var hidden = !visible && (!isActive() || isClone);
+      if (!Splide2.state.is([MOVING, SCROLLING])) {
+        setAttribute(slide, ARIA_HIDDEN, hidden || "");
+      }
+      setAttribute(focusableNodes, TAB_INDEX, hidden ? -1 : "");
+      if (slideFocus) {
+        setAttribute(slide, TAB_INDEX, hidden ? -1 : 0);
+      }
+      if (visible !== hasClass(slide, CLASS_VISIBLE)) {
+        toggleClass(slide, CLASS_VISIBLE, visible);
+        emit(visible ? EVENT_VISIBLE : EVENT_HIDDEN, self2);
+      }
+      if (!visible && document.activeElement === slide) {
+        var Slide2 = Components.Slides.getAt(Splide2.index);
+        Slide2 && focus(Slide2.slide);
+      }
+    }
+    function style$1(prop, value, useContainer) {
+      style(useContainer && container || slide, prop, value);
+    }
+    function isActive() {
+      var curr = Splide2.index;
+      return curr === index || options.cloneStatus && curr === slideIndex;
+    }
+    function isVisible() {
+      if (Splide2.is(FADE)) {
+        return isActive();
+      }
+      var trackRect = rect(Components.Elements.track);
+      var slideRect = rect(slide);
+      var left = resolve("left", true);
+      var right = resolve("right", true);
+      return floor(trackRect[left]) <= ceil(slideRect[left]) && floor(slideRect[right]) <= ceil(trackRect[right]);
+    }
+    function isWithin(from, distance) {
+      var diff = abs(from - index);
+      if (!isClone && (options.rewind || Splide2.is(LOOP))) {
+        diff = min(diff, Splide2.length - diff);
+      }
+      return diff <= distance;
+    }
+    var self2 = {
+      index,
+      slideIndex,
+      slide,
+      container,
+      isClone,
+      mount,
+      destroy,
+      update,
+      style: style$1,
+      isWithin
+    };
+    return self2;
+  }
+  function Slides(Splide2, Components2, options) {
+    var _EventInterface2 = EventInterface(Splide2), on = _EventInterface2.on, emit = _EventInterface2.emit, bind = _EventInterface2.bind;
+    var _Components2$Elements = Components2.Elements, slides = _Components2$Elements.slides, list = _Components2$Elements.list;
+    var Slides2 = [];
+    function mount() {
+      init();
+      on(EVENT_REFRESH, destroy);
+      on(EVENT_REFRESH, init);
+      on([EVENT_MOUNTED, EVENT_REFRESH], function() {
+        Slides2.sort(function(Slide1, Slide2) {
+          return Slide1.index - Slide2.index;
+        });
+      });
+    }
+    function init() {
+      slides.forEach(function(slide, index) {
+        register(slide, index, -1);
+      });
+    }
+    function destroy() {
+      forEach$1(function(Slide2) {
+        Slide2.destroy();
+      });
+      empty(Slides2);
+    }
+    function update() {
+      forEach$1(function(Slide2) {
+        Slide2.update();
+      });
+    }
+    function register(slide, index, slideIndex) {
+      var object = Slide$1(Splide2, index, slideIndex, slide);
+      object.mount();
+      Slides2.push(object);
+    }
+    function get(excludeClones) {
+      return excludeClones ? filter(function(Slide2) {
+        return !Slide2.isClone;
+      }) : Slides2;
+    }
+    function getIn(page) {
+      var Controller2 = Components2.Controller;
+      var index = Controller2.toIndex(page);
+      var max2 = Controller2.hasFocus() ? 1 : options.perPage;
+      return filter(function(Slide2) {
+        return between(Slide2.index, index, index + max2 - 1);
+      });
+    }
+    function getAt(index) {
+      return filter(index)[0];
+    }
+    function add(items, index) {
+      forEach(items, function(slide) {
+        if (isString(slide)) {
+          slide = parseHtml(slide);
+        }
+        if (isHTMLElement(slide)) {
+          var ref = slides[index];
+          ref ? before(slide, ref) : append(list, slide);
+          addClass(slide, options.classes.slide);
+          observeImages(slide, apply(emit, EVENT_RESIZE));
+        }
+      });
+      emit(EVENT_REFRESH);
+    }
+    function remove$1(matcher) {
+      remove(filter(matcher).map(function(Slide2) {
+        return Slide2.slide;
+      }));
+      emit(EVENT_REFRESH);
+    }
+    function forEach$1(iteratee, excludeClones) {
+      get(excludeClones).forEach(iteratee);
+    }
+    function filter(matcher) {
+      return Slides2.filter(isFunction(matcher) ? matcher : function(Slide2) {
+        return isString(matcher) ? matches(Slide2.slide, matcher) : includes(toArray(matcher), Slide2.index);
+      });
+    }
+    function style2(prop, value, useContainer) {
+      forEach$1(function(Slide2) {
+        Slide2.style(prop, value, useContainer);
+      });
+    }
+    function observeImages(elm, callback) {
+      var images = queryAll(elm, "img");
+      var length = images.length;
+      if (length) {
+        images.forEach(function(img) {
+          bind(img, "load error", function() {
+            if (!--length) {
+              callback();
+            }
+          });
+        });
+      } else {
+        callback();
+      }
+    }
+    function getLength(excludeClones) {
+      return excludeClones ? slides.length : Slides2.length;
+    }
+    function isEnough() {
+      return Slides2.length > options.perPage;
+    }
+    return {
+      mount,
+      destroy,
+      update,
+      register,
+      get,
+      getIn,
+      getAt,
+      add,
+      remove: remove$1,
+      forEach: forEach$1,
+      filter,
+      style: style2,
+      getLength,
+      isEnough
+    };
+  }
+  function Layout(Splide2, Components2, options) {
+    var _EventInterface3 = EventInterface(Splide2), on = _EventInterface3.on, bind = _EventInterface3.bind, emit = _EventInterface3.emit;
+    var Slides2 = Components2.Slides;
+    var resolve = Components2.Direction.resolve;
+    var _Components2$Elements2 = Components2.Elements, root = _Components2$Elements2.root, track = _Components2$Elements2.track, list = _Components2$Elements2.list;
+    var getAt = Slides2.getAt, styleSlides = Slides2.style;
+    var vertical;
+    var rootRect;
+    function mount() {
+      init();
+      bind(window, "resize load", Throttle(apply(emit, EVENT_RESIZE)));
+      on([EVENT_UPDATED, EVENT_REFRESH], init);
+      on(EVENT_RESIZE, resize);
+    }
+    function init() {
+      rootRect = null;
+      vertical = options.direction === TTB;
+      style(root, "maxWidth", unit(options.width));
+      style(track, resolve("paddingLeft"), cssPadding(false));
+      style(track, resolve("paddingRight"), cssPadding(true));
+      resize();
+    }
+    function resize() {
+      var newRect = rect(root);
+      if (!rootRect || rootRect.width !== newRect.width || rootRect.height !== newRect.height) {
+        style(track, "height", cssTrackHeight());
+        styleSlides(resolve("marginRight"), unit(options.gap));
+        styleSlides("width", cssSlideWidth());
+        styleSlides("height", cssSlideHeight(), true);
+        rootRect = newRect;
+        emit(EVENT_RESIZED);
+      }
+    }
+    function cssPadding(right) {
+      var padding = options.padding;
+      var prop = resolve(right ? "right" : "left");
+      return padding && unit(padding[prop] || (isObject(padding) ? 0 : padding)) || "0px";
+    }
+    function cssTrackHeight() {
+      var height = "";
+      if (vertical) {
+        height = cssHeight();
+        assert(height, "height or heightRatio is missing.");
+        height = "calc(" + height + " - " + cssPadding(false) + " - " + cssPadding(true) + ")";
+      }
+      return height;
+    }
+    function cssHeight() {
+      return unit(options.height || rect(list).width * options.heightRatio);
+    }
+    function cssSlideWidth() {
+      return options.autoWidth ? null : unit(options.fixedWidth) || (vertical ? "" : cssSlideSize());
+    }
+    function cssSlideHeight() {
+      return unit(options.fixedHeight) || (vertical ? options.autoHeight ? null : cssSlideSize() : cssHeight());
+    }
+    function cssSlideSize() {
+      var gap = unit(options.gap);
+      return "calc((100%" + (gap && " + " + gap) + ")/" + (options.perPage || 1) + (gap && " - " + gap) + ")";
+    }
+    function listSize() {
+      return rect(list)[resolve("width")];
+    }
+    function slideSize(index, withoutGap) {
+      var Slide2 = getAt(index || 0);
+      return Slide2 ? rect(Slide2.slide)[resolve("width")] + (withoutGap ? 0 : getGap()) : 0;
+    }
+    function totalSize(index, withoutGap) {
+      var Slide2 = getAt(index);
+      if (Slide2) {
+        var right = rect(Slide2.slide)[resolve("right")];
+        var left = rect(list)[resolve("left")];
+        return abs(right - left) + (withoutGap ? 0 : getGap());
+      }
+      return 0;
+    }
+    function sliderSize() {
+      return totalSize(Splide2.length - 1, true) - totalSize(-1, true);
+    }
+    function getGap() {
+      var Slide2 = getAt(0);
+      return Slide2 && parseFloat(style(Slide2.slide, resolve("marginRight"))) || 0;
+    }
+    function getPadding(right) {
+      return parseFloat(style(track, resolve("padding" + (right ? "Right" : "Left")))) || 0;
+    }
+    return {
+      mount,
+      listSize,
+      slideSize,
+      sliderSize,
+      totalSize,
+      getPadding
+    };
+  }
+  var MULTIPLIER = 2;
+  function Clones(Splide2, Components2, options) {
+    var _EventInterface4 = EventInterface(Splide2), on = _EventInterface4.on, emit = _EventInterface4.emit;
+    var Elements2 = Components2.Elements, Slides2 = Components2.Slides;
+    var resolve = Components2.Direction.resolve;
+    var clones = [];
+    var cloneCount;
+    function mount() {
+      init();
+      on(EVENT_REFRESH, destroy);
+      on(EVENT_REFRESH, init);
+      on([EVENT_UPDATED, EVENT_RESIZE], observe);
+    }
+    function init() {
+      if (cloneCount = computeCloneCount()) {
+        generate(cloneCount);
+        emit(EVENT_RESIZE);
+      }
+    }
+    function destroy() {
+      remove(clones);
+      empty(clones);
+    }
+    function observe() {
+      if (cloneCount < computeCloneCount()) {
+        emit(EVENT_REFRESH);
+      }
+    }
+    function generate(count) {
+      var slides = Slides2.get().slice();
+      var length = slides.length;
+      if (length) {
+        while (slides.length < count) {
+          push(slides, slides);
+        }
+        push(slides.slice(-count), slides.slice(0, count)).forEach(function(Slide2, index) {
+          var isHead = index < count;
+          var clone = cloneDeep(Slide2.slide, index);
+          isHead ? before(clone, slides[0].slide) : append(Elements2.list, clone);
+          push(clones, clone);
+          Slides2.register(clone, index - count + (isHead ? 0 : length), Slide2.index);
+        });
+      }
+    }
+    function cloneDeep(elm, index) {
+      var clone = elm.cloneNode(true);
+      addClass(clone, options.classes.clone);
+      clone.id = Splide2.root.id + "-clone" + pad(index + 1);
+      return clone;
+    }
+    function computeCloneCount() {
+      var clones2 = options.clones;
+      if (!Splide2.is(LOOP)) {
+        clones2 = 0;
+      } else if (!clones2) {
+        var fixedSize = options[resolve("fixedWidth")] && Components2.Layout.slideSize(0);
+        var fixedCount = fixedSize && ceil(rect(Elements2.track)[resolve("width")] / fixedSize);
+        clones2 = fixedCount || options[resolve("autoWidth")] && Splide2.length || options.perPage * MULTIPLIER;
+      }
+      return clones2;
+    }
+    return {
+      mount,
+      destroy
+    };
+  }
+  function Move(Splide2, Components2, options) {
+    var _EventInterface5 = EventInterface(Splide2), on = _EventInterface5.on, emit = _EventInterface5.emit;
+    var set = Splide2.state.set;
+    var _Components2$Layout = Components2.Layout, slideSize = _Components2$Layout.slideSize, getPadding = _Components2$Layout.getPadding, totalSize = _Components2$Layout.totalSize, listSize = _Components2$Layout.listSize, sliderSize = _Components2$Layout.sliderSize;
+    var _Components2$Directio = Components2.Direction, resolve = _Components2$Directio.resolve, orient = _Components2$Directio.orient;
+    var _Components2$Elements3 = Components2.Elements, list = _Components2$Elements3.list, track = _Components2$Elements3.track;
+    var Transition;
+    function mount() {
+      Transition = Components2.Transition;
+      on([EVENT_MOUNTED, EVENT_RESIZED, EVENT_UPDATED, EVENT_REFRESH], reposition);
+    }
+    function reposition() {
+      if (!Components2.Controller.isBusy()) {
+        Components2.Scroll.cancel();
+        jump(Splide2.index);
+        Components2.Slides.update();
+      }
+    }
+    function move(dest, index, prev, callback) {
+      if (dest !== index && canShift(dest > prev)) {
+        cancel();
+        translate(shift(getPosition(), dest > prev), true);
+      }
+      set(MOVING);
+      emit(EVENT_MOVE, index, prev, dest);
+      Transition.start(index, function() {
+        set(IDLE);
+        emit(EVENT_MOVED, index, prev, dest);
+        callback && callback();
+      });
+    }
+    function jump(index) {
+      translate(toPosition(index, true));
+    }
+    function translate(position, preventLoop) {
+      if (!Splide2.is(FADE)) {
+        var destination = preventLoop ? position : loop(position);
+        style(list, "transform", "translate" + resolve("X") + "(" + destination + "px)");
+        position !== destination && emit(EVENT_SHIFTED);
+      }
+    }
+    function loop(position) {
+      if (Splide2.is(LOOP)) {
+        var index = toIndex(position);
+        var exceededMax = index > Components2.Controller.getEnd();
+        var exceededMin = index < 0;
+        if (exceededMin || exceededMax) {
+          position = shift(position, exceededMax);
+        }
+      }
+      return position;
+    }
+    function shift(position, backwards) {
+      var excess = position - getLimit(backwards);
+      var size = sliderSize();
+      position -= orient(size * (ceil(abs(excess) / size) || 1)) * (backwards ? 1 : -1);
+      return position;
+    }
+    function cancel() {
+      translate(getPosition());
+      Transition.cancel();
+    }
+    function toIndex(position) {
+      var Slides2 = Components2.Slides.get();
+      var index = 0;
+      var minDistance = Infinity;
+      for (var i = 0; i < Slides2.length; i++) {
+        var slideIndex = Slides2[i].index;
+        var distance = abs(toPosition(slideIndex, true) - position);
+        if (distance <= minDistance) {
+          minDistance = distance;
+          index = slideIndex;
+        } else {
+          break;
+        }
+      }
+      return index;
+    }
+    function toPosition(index, trimming) {
+      var position = orient(totalSize(index - 1) - offset(index));
+      return trimming ? trim(position) : position;
+    }
+    function getPosition() {
+      var left = resolve("left");
+      return rect(list)[left] - rect(track)[left] + orient(getPadding(false));
+    }
+    function trim(position) {
+      if (options.trimSpace && Splide2.is(SLIDE)) {
+        position = clamp(position, 0, orient(sliderSize() - listSize()));
+      }
+      return position;
+    }
+    function offset(index) {
+      var focus2 = options.focus;
+      return focus2 === "center" ? (listSize() - slideSize(index, true)) / 2 : +focus2 * slideSize(index) || 0;
+    }
+    function getLimit(max2) {
+      return toPosition(max2 ? Components2.Controller.getEnd() : 0, !!options.trimSpace);
+    }
+    function canShift(backwards) {
+      var shifted = orient(shift(getPosition(), backwards));
+      return backwards ? shifted >= 0 : shifted <= list[resolve("scrollWidth")] - rect(track)[resolve("width")];
+    }
+    function exceededLimit(max2, position) {
+      position = isUndefined(position) ? getPosition() : position;
+      var exceededMin = max2 !== true && orient(position) < orient(getLimit(false));
+      var exceededMax = max2 !== false && orient(position) > orient(getLimit(true));
+      return exceededMin || exceededMax;
+    }
+    return {
+      mount,
+      move,
+      jump,
+      translate,
+      shift,
+      cancel,
+      toIndex,
+      toPosition,
+      getPosition,
+      getLimit,
+      exceededLimit,
+      reposition
+    };
+  }
+  function Controller(Splide2, Components2, options) {
+    var _EventInterface6 = EventInterface(Splide2), on = _EventInterface6.on;
+    var Move2 = Components2.Move;
+    var getPosition = Move2.getPosition, getLimit = Move2.getLimit, toPosition = Move2.toPosition;
+    var _Components2$Slides = Components2.Slides, isEnough = _Components2$Slides.isEnough, getLength = _Components2$Slides.getLength;
+    var isLoop = Splide2.is(LOOP);
+    var isSlide = Splide2.is(SLIDE);
+    var getNext = apply(getAdjacent, false);
+    var getPrev = apply(getAdjacent, true);
+    var currIndex = options.start || 0;
+    var prevIndex = currIndex;
+    var slideCount;
+    var perMove;
+    var perPage;
+    function mount() {
+      init();
+      on([EVENT_UPDATED, EVENT_REFRESH], init);
+    }
+    function init() {
+      slideCount = getLength(true);
+      perMove = options.perMove;
+      perPage = options.perPage;
+      var index = clamp(currIndex, 0, slideCount - 1);
+      if (index !== currIndex) {
+        currIndex = index;
+        Move2.reposition();
+      }
+    }
+    function go(control, allowSameIndex, callback) {
+      if (!isBusy()) {
+        var dest = parse(control);
+        var index = loop(dest);
+        if (index > -1 && (allowSameIndex || index !== currIndex)) {
+          setIndex(index);
+          Move2.move(dest, index, prevIndex, callback);
+        }
+      }
+    }
+    function scroll(destination, duration, snap, callback) {
+      Components2.Scroll.scroll(destination, duration, snap, function() {
+        setIndex(loop(Move2.toIndex(getPosition())));
+        callback && callback();
+      });
+    }
+    function parse(control) {
+      var index = currIndex;
+      if (isString(control)) {
+        var _ref = control.match(/([+\-<>])(\d+)?/) || [], indicator = _ref[1], number = _ref[2];
+        if (indicator === "+" || indicator === "-") {
+          index = computeDestIndex(currIndex + +("" + indicator + (+number || 1)), currIndex);
+        } else if (indicator === ">") {
+          index = number ? toIndex(+number) : getNext(true);
+        } else if (indicator === "<") {
+          index = getPrev(true);
+        }
+      } else {
+        index = isLoop ? control : clamp(control, 0, getEnd());
+      }
+      return index;
+    }
+    function getAdjacent(prev, destination) {
+      var number = perMove || (hasFocus() ? 1 : perPage);
+      var dest = computeDestIndex(currIndex + number * (prev ? -1 : 1), currIndex, !(perMove || hasFocus()));
+      if (dest === -1 && isSlide) {
+        if (!approximatelyEqual(getPosition(), getLimit(!prev), 1)) {
+          return prev ? 0 : getEnd();
+        }
+      }
+      return destination ? dest : loop(dest);
+    }
+    function computeDestIndex(dest, from, snapPage) {
+      if (isEnough()) {
+        var end = getEnd();
+        var index = computeMovableDestIndex(dest);
+        if (index !== dest) {
+          from = dest;
+          dest = index;
+          snapPage = false;
+        }
+        if (dest < 0 || dest > end) {
+          if (!perMove && (between(0, dest, from, true) || between(end, from, dest, true))) {
+            dest = toIndex(toPage(dest));
+          } else {
+            if (isLoop) {
+              dest = snapPage ? dest < 0 ? -(slideCount % perPage || perPage) : slideCount : dest;
+            } else if (options.rewind) {
+              dest = dest < 0 ? end : 0;
+            } else {
+              dest = -1;
+            }
+          }
+        } else {
+          if (snapPage && dest !== from) {
+            dest = toIndex(toPage(from) + (dest < from ? -1 : 1));
+          }
+        }
+      } else {
+        dest = -1;
+      }
+      return dest;
+    }
+    function computeMovableDestIndex(dest) {
+      if (isSlide && options.trimSpace === "move" && dest !== currIndex) {
+        var position = getPosition();
+        while (position === toPosition(dest, true) && between(dest, 0, Splide2.length - 1, !options.rewind)) {
+          dest < currIndex ? --dest : ++dest;
+        }
+      }
+      return dest;
+    }
+    function loop(index) {
+      return isLoop ? (index + slideCount) % slideCount || 0 : index;
+    }
+    function getEnd() {
+      return max(slideCount - (hasFocus() || isLoop && perMove ? 1 : perPage), 0);
+    }
+    function toIndex(page) {
+      return clamp(hasFocus() ? page : perPage * page, 0, getEnd());
+    }
+    function toPage(index) {
+      return hasFocus() ? index : floor((index >= getEnd() ? slideCount - 1 : index) / perPage);
+    }
+    function toDest(destination) {
+      var closest2 = Move2.toIndex(destination);
+      return isSlide ? clamp(closest2, 0, getEnd()) : closest2;
+    }
+    function setIndex(index) {
+      if (index !== currIndex) {
+        prevIndex = currIndex;
+        currIndex = index;
+      }
+    }
+    function getIndex(prev) {
+      return prev ? prevIndex : currIndex;
+    }
+    function hasFocus() {
+      return !isUndefined(options.focus) || options.isNavigation;
+    }
+    function isBusy() {
+      return Splide2.state.is([MOVING, SCROLLING]) && !!options.waitForTransition;
+    }
+    return {
+      mount,
+      go,
+      scroll,
+      getNext,
+      getPrev,
+      getAdjacent,
+      getEnd,
+      setIndex,
+      getIndex,
+      toIndex,
+      toPage,
+      toDest,
+      hasFocus,
+      isBusy
+    };
+  }
+  var XML_NAME_SPACE = "http://www.w3.org/2000/svg";
+  var PATH = "m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z";
+  var SIZE = 40;
+  function Arrows(Splide2, Components2, options) {
+    var event = EventInterface(Splide2);
+    var on = event.on, bind = event.bind, emit = event.emit;
+    var classes = options.classes, i18n = options.i18n;
+    var Elements2 = Components2.Elements, Controller2 = Components2.Controller;
+    var userArrows = Elements2.arrows, track = Elements2.track;
+    var wrapper = userArrows;
+    var prev = Elements2.prev;
+    var next = Elements2.next;
+    var created;
+    var wrapperClasses;
+    var arrows = {};
+    function mount() {
+      init();
+      on(EVENT_UPDATED, remount);
+    }
+    function remount() {
+      destroy();
+      mount();
+    }
+    function init() {
+      var enabled = options.arrows;
+      if (enabled && !(prev && next)) {
+        createArrows();
+      }
+      if (prev && next) {
+        assign(arrows, {
+          prev,
+          next
+        });
+        display(wrapper, enabled ? "" : "none");
+        addClass(wrapper, wrapperClasses = CLASS_ARROWS + "--" + options.direction);
+        if (enabled) {
+          listen();
+          update();
+          setAttribute([prev, next], ARIA_CONTROLS, track.id);
+          emit(EVENT_ARROWS_MOUNTED, prev, next);
+        }
+      }
+    }
+    function destroy() {
+      event.destroy();
+      removeClass(wrapper, wrapperClasses);
+      if (created) {
+        remove(userArrows ? [prev, next] : wrapper);
+        prev = next = null;
+      } else {
+        removeAttribute([prev, next], ALL_ATTRIBUTES);
+      }
+    }
+    function listen() {
+      on([EVENT_MOVED, EVENT_REFRESH, EVENT_SCROLLED], update);
+      bind(next, "click", apply(go, ">"));
+      bind(prev, "click", apply(go, "<"));
+    }
+    function go(control) {
+      Controller2.go(control, true);
+    }
+    function createArrows() {
+      wrapper = userArrows || create2("div", classes.arrows);
+      prev = createArrow(true);
+      next = createArrow(false);
+      created = true;
+      append(wrapper, [prev, next]);
+      !userArrows && before(wrapper, track);
+    }
+    function createArrow(prev2) {
+      var arrow = '<button class="' + classes.arrow + " " + (prev2 ? classes.prev : classes.next) + '" type="button"><svg xmlns="' + XML_NAME_SPACE + '" viewBox="0 0 ' + SIZE + " " + SIZE + '" width="' + SIZE + '" height="' + SIZE + '" focusable="false"><path d="' + (options.arrowPath || PATH) + '" />';
+      return parseHtml(arrow);
+    }
+    function update() {
+      var index = Splide2.index;
+      var prevIndex = Controller2.getPrev();
+      var nextIndex = Controller2.getNext();
+      var prevLabel = prevIndex > -1 && index < prevIndex ? i18n.last : i18n.prev;
+      var nextLabel = nextIndex > -1 && index > nextIndex ? i18n.first : i18n.next;
+      prev.disabled = prevIndex < 0;
+      next.disabled = nextIndex < 0;
+      setAttribute(prev, ARIA_LABEL, prevLabel);
+      setAttribute(next, ARIA_LABEL, nextLabel);
+      emit(EVENT_ARROWS_UPDATED, prev, next, prevIndex, nextIndex);
+    }
+    return {
+      arrows,
+      mount,
+      destroy
+    };
+  }
+  var INTERVAL_DATA_ATTRIBUTE = DATA_ATTRIBUTE + "-interval";
+  function Autoplay(Splide2, Components2, options) {
+    var _EventInterface7 = EventInterface(Splide2), on = _EventInterface7.on, bind = _EventInterface7.bind, emit = _EventInterface7.emit;
+    var interval = RequestInterval(options.interval, Splide2.go.bind(Splide2, ">"), onAnimationFrame);
+    var isPaused = interval.isPaused;
+    var Elements2 = Components2.Elements, _Components2$Elements4 = Components2.Elements, root = _Components2$Elements4.root, toggle = _Components2$Elements4.toggle;
+    var autoplay = options.autoplay;
+    var hovered;
+    var focused;
+    var stopped = autoplay === "pause";
+    function mount() {
+      if (autoplay) {
+        listen();
+        toggle && setAttribute(toggle, ARIA_CONTROLS, Elements2.track.id);
+        stopped || play();
+        update();
+      }
+    }
+    function listen() {
+      if (options.pauseOnHover) {
+        bind(root, "mouseenter mouseleave", function(e) {
+          hovered = e.type === "mouseenter";
+          autoToggle();
+        });
+      }
+      if (options.pauseOnFocus) {
+        bind(root, "focusin focusout", function(e) {
+          focused = e.type === "focusin";
+          autoToggle();
+        });
+      }
+      if (toggle) {
+        bind(toggle, "click", function() {
+          stopped ? play() : pause(true);
+        });
+      }
+      on([EVENT_MOVE, EVENT_SCROLL, EVENT_REFRESH], interval.rewind);
+      on(EVENT_MOVE, onMove);
+    }
+    function play() {
+      if (isPaused() && Components2.Slides.isEnough()) {
+        interval.start(!options.resetProgress);
+        focused = hovered = stopped = false;
+        update();
+        emit(EVENT_AUTOPLAY_PLAY);
+      }
+    }
+    function pause(stop) {
+      if (stop === void 0) {
+        stop = true;
+      }
+      stopped = !!stop;
+      update();
+      if (!isPaused()) {
+        interval.pause();
+        emit(EVENT_AUTOPLAY_PAUSE);
+      }
+    }
+    function autoToggle() {
+      if (!stopped) {
+        hovered || focused ? pause(false) : play();
+      }
+    }
+    function update() {
+      if (toggle) {
+        toggleClass(toggle, CLASS_ACTIVE, !stopped);
+        setAttribute(toggle, ARIA_LABEL, options.i18n[stopped ? "play" : "pause"]);
+      }
+    }
+    function onAnimationFrame(rate) {
+      var bar = Elements2.bar;
+      bar && style(bar, "width", rate * 100 + "%");
+      emit(EVENT_AUTOPLAY_PLAYING, rate);
+    }
+    function onMove(index) {
+      var Slide2 = Components2.Slides.getAt(index);
+      interval.set(Slide2 && +getAttribute(Slide2.slide, INTERVAL_DATA_ATTRIBUTE) || options.interval);
+    }
+    return {
+      mount,
+      destroy: interval.cancel,
+      play,
+      pause,
+      isPaused
+    };
+  }
+  function Cover(Splide2, Components2, options) {
+    var _EventInterface8 = EventInterface(Splide2), on = _EventInterface8.on;
+    function mount() {
+      if (options.cover) {
+        on(EVENT_LAZYLOAD_LOADED, apply(toggle, true));
+        on([EVENT_MOUNTED, EVENT_UPDATED, EVENT_REFRESH], apply(cover, true));
+      }
+    }
+    function cover(cover2) {
+      Components2.Slides.forEach(function(Slide2) {
+        var img = child(Slide2.container || Slide2.slide, "img");
+        if (img && img.src) {
+          toggle(cover2, img, Slide2);
+        }
+      });
+    }
+    function toggle(cover2, img, Slide2) {
+      Slide2.style("background", cover2 ? 'center/cover no-repeat url("' + img.src + '")' : "", true);
+      display(img, cover2 ? "none" : "");
+    }
+    return {
+      mount,
+      destroy: apply(cover, false)
+    };
+  }
+  var BOUNCE_DIFF_THRESHOLD = 10;
+  var BOUNCE_DURATION = 600;
+  var FRICTION_FACTOR = 0.6;
+  var BASE_VELOCITY = 1.5;
+  var MIN_DURATION = 800;
+  function Scroll(Splide2, Components2, options) {
+    var _EventInterface9 = EventInterface(Splide2), on = _EventInterface9.on, emit = _EventInterface9.emit;
+    var set = Splide2.state.set;
+    var Move2 = Components2.Move;
+    var getPosition = Move2.getPosition, getLimit = Move2.getLimit, exceededLimit = Move2.exceededLimit, translate = Move2.translate;
+    var interval;
+    var callback;
+    var friction = 1;
+    function mount() {
+      on(EVENT_MOVE, clear);
+      on([EVENT_UPDATED, EVENT_REFRESH], cancel);
+    }
+    function scroll(destination, duration, snap, onScrolled, noConstrain) {
+      var from = getPosition();
+      clear();
+      if (snap) {
+        var size = Components2.Layout.sliderSize();
+        var offset = sign(destination) * size * floor(abs(destination) / size) || 0;
+        destination = Move2.toPosition(Components2.Controller.toDest(destination % size)) + offset;
+      }
+      var noDistance = approximatelyEqual(from, destination, 1);
+      friction = 1;
+      duration = noDistance ? 0 : duration || max(abs(destination - from) / BASE_VELOCITY, MIN_DURATION);
+      callback = onScrolled;
+      interval = RequestInterval(duration, onEnd, apply(update, from, destination, noConstrain), 1);
+      set(SCROLLING);
+      emit(EVENT_SCROLL);
+      interval.start();
+    }
+    function onEnd() {
+      set(IDLE);
+      callback && callback();
+      emit(EVENT_SCROLLED);
+    }
+    function update(from, to, noConstrain, rate) {
+      var position = getPosition();
+      var target = from + (to - from) * easing(rate);
+      var diff = (target - position) * friction;
+      translate(position + diff);
+      if (Splide2.is(SLIDE) && !noConstrain && exceededLimit()) {
+        friction *= FRICTION_FACTOR;
+        if (abs(diff) < BOUNCE_DIFF_THRESHOLD) {
+          scroll(getLimit(exceededLimit(true)), BOUNCE_DURATION, false, callback, true);
+        }
+      }
+    }
+    function clear() {
+      if (interval) {
+        interval.cancel();
+      }
+    }
+    function cancel() {
+      if (interval && !interval.isPaused()) {
+        clear();
+        onEnd();
+      }
+    }
+    function easing(t) {
+      var easingFunc = options.easingFunc;
+      return easingFunc ? easingFunc(t) : 1 - Math.pow(1 - t, 4);
+    }
+    return {
+      mount,
+      destroy: clear,
+      scroll,
+      cancel
+    };
+  }
+  var SCROLL_LISTENER_OPTIONS = {
+    passive: false,
+    capture: true
+  };
+  function Drag(Splide2, Components2, options) {
+    var _EventInterface10 = EventInterface(Splide2), on = _EventInterface10.on, emit = _EventInterface10.emit, bind = _EventInterface10.bind, unbind = _EventInterface10.unbind;
+    var state = Splide2.state;
+    var Move2 = Components2.Move, Scroll2 = Components2.Scroll, Controller2 = Components2.Controller, track = Components2.Elements.track, reduce = Components2.Media.reduce;
+    var _Components2$Directio2 = Components2.Direction, resolve = _Components2$Directio2.resolve, orient = _Components2$Directio2.orient;
+    var getPosition = Move2.getPosition, exceededLimit = Move2.exceededLimit;
+    var basePosition;
+    var baseEvent;
+    var prevBaseEvent;
+    var isFree;
+    var dragging;
+    var exceeded = false;
+    var clickPrevented;
+    var disabled;
+    var target;
+    function mount() {
+      bind(track, POINTER_MOVE_EVENTS, noop, SCROLL_LISTENER_OPTIONS);
+      bind(track, POINTER_UP_EVENTS, noop, SCROLL_LISTENER_OPTIONS);
+      bind(track, POINTER_DOWN_EVENTS, onPointerDown, SCROLL_LISTENER_OPTIONS);
+      bind(track, "click", onClick, {
+        capture: true
+      });
+      bind(track, "dragstart", prevent);
+      on([EVENT_MOUNTED, EVENT_UPDATED], init);
+    }
+    function init() {
+      var drag = options.drag;
+      disable(!drag);
+      isFree = drag === "free";
+    }
+    function onPointerDown(e) {
+      clickPrevented = false;
+      if (!disabled) {
+        var isTouch = isTouchEvent(e);
+        if (isDraggable(e.target) && (isTouch || !e.button)) {
+          if (!Controller2.isBusy()) {
+            target = isTouch ? track : window;
+            dragging = state.is([MOVING, SCROLLING]);
+            prevBaseEvent = null;
+            bind(target, POINTER_MOVE_EVENTS, onPointerMove, SCROLL_LISTENER_OPTIONS);
+            bind(target, POINTER_UP_EVENTS, onPointerUp, SCROLL_LISTENER_OPTIONS);
+            Move2.cancel();
+            Scroll2.cancel();
+            save(e);
+          } else {
+            prevent(e, true);
+          }
+        }
+      }
+    }
+    function onPointerMove(e) {
+      if (!state.is(DRAGGING)) {
+        state.set(DRAGGING);
+        emit(EVENT_DRAG);
+      }
+      if (e.cancelable) {
+        if (dragging) {
+          Move2.translate(basePosition + constrain(diffCoord(e)));
+          var expired = diffTime(e) > LOG_INTERVAL;
+          var hasExceeded = exceeded !== (exceeded = exceededLimit());
+          if (expired || hasExceeded) {
+            save(e);
+          }
+          clickPrevented = true;
+          emit(EVENT_DRAGGING);
+          prevent(e);
+        } else if (isSliderDirection(e)) {
+          dragging = shouldStart(e);
+          prevent(e);
+        }
+      }
+    }
+    function onPointerUp(e) {
+      if (state.is(DRAGGING)) {
+        state.set(IDLE);
+        emit(EVENT_DRAGGED);
+      }
+      if (dragging) {
+        move(e);
+        prevent(e);
+      }
+      unbind(target, POINTER_MOVE_EVENTS, onPointerMove);
+      unbind(target, POINTER_UP_EVENTS, onPointerUp);
+      dragging = false;
+    }
+    function onClick(e) {
+      if (!disabled && clickPrevented) {
+        prevent(e, true);
+      }
+    }
+    function save(e) {
+      prevBaseEvent = baseEvent;
+      baseEvent = e;
+      basePosition = getPosition();
+    }
+    function move(e) {
+      var velocity = computeVelocity(e);
+      var destination = computeDestination(velocity);
+      var rewind = options.rewind && options.rewindByDrag;
+      reduce(false);
+      if (isFree) {
+        Controller2.scroll(destination, 0, options.snap);
+      } else if (Splide2.is(FADE)) {
+        Controller2.go(orient(sign(velocity)) < 0 ? rewind ? "<" : "-" : rewind ? ">" : "+");
+      } else if (Splide2.is(SLIDE) && exceeded && rewind) {
+        Controller2.go(exceededLimit(true) ? ">" : "<");
+      } else {
+        Controller2.go(Controller2.toDest(destination), true);
+      }
+      reduce(true);
+    }
+    function shouldStart(e) {
+      var thresholds = options.dragMinThreshold;
+      var isObj = isObject(thresholds);
+      var mouse = isObj && thresholds.mouse || 0;
+      var touch = (isObj ? thresholds.touch : +thresholds) || 10;
+      return abs(diffCoord(e)) > (isTouchEvent(e) ? touch : mouse);
+    }
+    function isSliderDirection(e) {
+      return abs(diffCoord(e)) > abs(diffCoord(e, true));
+    }
+    function computeVelocity(e) {
+      if (Splide2.is(LOOP) || !exceeded) {
+        var time = diffTime(e);
+        if (time && time < LOG_INTERVAL) {
+          return diffCoord(e) / time;
+        }
+      }
+      return 0;
+    }
+    function computeDestination(velocity) {
+      return getPosition() + sign(velocity) * min(abs(velocity) * (options.flickPower || 600), isFree ? Infinity : Components2.Layout.listSize() * (options.flickMaxPages || 1));
+    }
+    function diffCoord(e, orthogonal) {
+      return coordOf(e, orthogonal) - coordOf(getBaseEvent(e), orthogonal);
+    }
+    function diffTime(e) {
+      return timeOf(e) - timeOf(getBaseEvent(e));
+    }
+    function getBaseEvent(e) {
+      return baseEvent === e && prevBaseEvent || baseEvent;
+    }
+    function coordOf(e, orthogonal) {
+      return (isTouchEvent(e) ? e.changedTouches[0] : e)["page" + resolve(orthogonal ? "Y" : "X")];
+    }
+    function constrain(diff) {
+      return diff / (exceeded && Splide2.is(SLIDE) ? FRICTION : 1);
+    }
+    function isDraggable(target2) {
+      var noDrag = options.noDrag;
+      return !matches(target2, "." + CLASS_PAGINATION_PAGE + ", ." + CLASS_ARROW) && (!noDrag || !matches(target2, noDrag));
+    }
+    function isTouchEvent(e) {
+      return typeof TouchEvent !== "undefined" && e instanceof TouchEvent;
+    }
+    function isDragging() {
+      return dragging;
+    }
+    function disable(value) {
+      disabled = value;
+    }
+    return {
+      mount,
+      disable,
+      isDragging
+    };
+  }
+  var NORMALIZATION_MAP = {
+    Spacebar: " ",
+    Right: ARROW_RIGHT,
+    Left: ARROW_LEFT,
+    Up: ARROW_UP,
+    Down: ARROW_DOWN
+  };
+  function normalizeKey(key) {
+    key = isString(key) ? key : key.key;
+    return NORMALIZATION_MAP[key] || key;
+  }
+  var KEYBOARD_EVENT = "keydown";
+  function Keyboard(Splide2, Components2, options) {
+    var _EventInterface11 = EventInterface(Splide2), on = _EventInterface11.on, bind = _EventInterface11.bind, unbind = _EventInterface11.unbind;
+    var root = Splide2.root;
+    var resolve = Components2.Direction.resolve;
+    var target;
+    var disabled;
+    function mount() {
+      init();
+      on(EVENT_UPDATED, destroy);
+      on(EVENT_UPDATED, init);
+      on(EVENT_MOVE, onMove);
+    }
+    function init() {
+      var keyboard = options.keyboard;
+      if (keyboard) {
+        target = keyboard === "global" ? window : root;
+        bind(target, KEYBOARD_EVENT, onKeydown);
+      }
+    }
+    function destroy() {
+      unbind(target, KEYBOARD_EVENT);
+    }
+    function disable(value) {
+      disabled = value;
+    }
+    function onMove() {
+      var _disabled = disabled;
+      disabled = true;
+      nextTick(function() {
+        disabled = _disabled;
+      });
+    }
+    function onKeydown(e) {
+      if (!disabled) {
+        var key = normalizeKey(e);
+        if (key === resolve(ARROW_LEFT)) {
+          Splide2.go("<");
+        } else if (key === resolve(ARROW_RIGHT)) {
+          Splide2.go(">");
+        }
+      }
+    }
+    return {
+      mount,
+      destroy,
+      disable
+    };
+  }
+  var SRC_DATA_ATTRIBUTE = DATA_ATTRIBUTE + "-lazy";
+  var SRCSET_DATA_ATTRIBUTE = SRC_DATA_ATTRIBUTE + "-srcset";
+  var IMAGE_SELECTOR = "[" + SRC_DATA_ATTRIBUTE + "], [" + SRCSET_DATA_ATTRIBUTE + "]";
+  function LazyLoad(Splide2, Components2, options) {
+    var _EventInterface12 = EventInterface(Splide2), on = _EventInterface12.on, off = _EventInterface12.off, bind = _EventInterface12.bind, emit = _EventInterface12.emit;
+    var isSequential = options.lazyLoad === "sequential";
+    var events = [EVENT_MOUNTED, EVENT_REFRESH, EVENT_MOVED, EVENT_SCROLLED];
+    var entries = [];
+    function mount() {
+      if (options.lazyLoad) {
+        init();
+        on(EVENT_REFRESH, init);
+        isSequential || on(events, observe);
+      }
+    }
+    function init() {
+      empty(entries);
+      Components2.Slides.forEach(function(Slide2) {
+        queryAll(Slide2.slide, IMAGE_SELECTOR).forEach(function(img) {
+          var src = getAttribute(img, SRC_DATA_ATTRIBUTE);
+          var srcset = getAttribute(img, SRCSET_DATA_ATTRIBUTE);
+          if (src !== img.src || srcset !== img.srcset) {
+            var className = options.classes.spinner;
+            var parent = img.parentElement;
+            var spinner = child(parent, "." + className) || create2("span", className, parent);
+            entries.push([img, Slide2, spinner]);
+            img.src || display(img, "none");
+          }
+        });
+      });
+      isSequential && loadNext();
+    }
+    function observe() {
+      entries = entries.filter(function(data) {
+        var distance = options.perPage * ((options.preloadPages || 1) + 1) - 1;
+        return data[1].isWithin(Splide2.index, distance) ? load(data) : true;
+      });
+      entries.length || off(events);
+    }
+    function load(data) {
+      var img = data[0];
+      addClass(data[1].slide, CLASS_LOADING);
+      bind(img, "load error", apply(onLoad, data));
+      setAttribute(img, "src", getAttribute(img, SRC_DATA_ATTRIBUTE));
+      setAttribute(img, "srcset", getAttribute(img, SRCSET_DATA_ATTRIBUTE));
+      removeAttribute(img, SRC_DATA_ATTRIBUTE);
+      removeAttribute(img, SRCSET_DATA_ATTRIBUTE);
+    }
+    function onLoad(data, e) {
+      var img = data[0], Slide2 = data[1];
+      removeClass(Slide2.slide, CLASS_LOADING);
+      if (e.type !== "error") {
+        remove(data[2]);
+        display(img, "");
+        emit(EVENT_LAZYLOAD_LOADED, img, Slide2);
+        emit(EVENT_RESIZE);
+      }
+      isSequential && loadNext();
+    }
+    function loadNext() {
+      entries.length && load(entries.shift());
+    }
+    return {
+      mount,
+      destroy: apply(empty, entries)
+    };
+  }
+  function Pagination(Splide2, Components2, options) {
+    var event = EventInterface(Splide2);
+    var on = event.on, emit = event.emit, bind = event.bind;
+    var Slides2 = Components2.Slides, Elements2 = Components2.Elements, Controller2 = Components2.Controller;
+    var hasFocus = Controller2.hasFocus, getIndex = Controller2.getIndex, go = Controller2.go;
+    var resolve = Components2.Direction.resolve;
+    var items = [];
+    var list;
+    var paginationClasses;
+    function mount() {
+      destroy();
+      on([EVENT_UPDATED, EVENT_REFRESH], mount);
+      if (options.pagination && Slides2.isEnough()) {
+        on([EVENT_MOVE, EVENT_SCROLL, EVENT_SCROLLED], update);
+        createPagination();
+        update();
+        emit(EVENT_PAGINATION_MOUNTED, {
+          list,
+          items
+        }, getAt(Splide2.index));
+      }
+    }
+    function destroy() {
+      if (list) {
+        remove(Elements2.pagination ? slice(list.children) : list);
+        removeClass(list, paginationClasses);
+        empty(items);
+        list = null;
+      }
+      event.destroy();
+    }
+    function createPagination() {
+      var length = Splide2.length;
+      var classes = options.classes, i18n = options.i18n, perPage = options.perPage;
+      var max2 = hasFocus() ? length : ceil(length / perPage);
+      list = Elements2.pagination || create2("ul", classes.pagination, Elements2.track.parentElement);
+      addClass(list, paginationClasses = CLASS_PAGINATION + "--" + getDirection());
+      setAttribute(list, ROLE, "tablist");
+      setAttribute(list, ARIA_LABEL, i18n.select);
+      setAttribute(list, ARIA_ORIENTATION, getDirection() === TTB ? "vertical" : "");
+      for (var i = 0; i < max2; i++) {
+        var li = create2("li", null, list);
+        var button = create2("button", {
+          class: classes.page,
+          type: "button"
+        }, li);
+        var controls = Slides2.getIn(i).map(function(Slide2) {
+          return Slide2.slide.id;
+        });
+        var text = !hasFocus() && perPage > 1 ? i18n.pageX : i18n.slideX;
+        bind(button, "click", apply(onClick, i));
+        if (options.paginationKeyboard) {
+          bind(button, "keydown", apply(onKeydown, i));
+        }
+        setAttribute(li, ROLE, "presentation");
+        setAttribute(button, ROLE, "tab");
+        setAttribute(button, ARIA_CONTROLS, controls.join(" "));
+        setAttribute(button, ARIA_LABEL, format(text, i + 1));
+        setAttribute(button, TAB_INDEX, -1);
+        items.push({
+          li,
+          button,
+          page: i
+        });
+      }
+    }
+    function onClick(page) {
+      go(">" + page, true);
+    }
+    function onKeydown(page, e) {
+      var length = items.length;
+      var key = normalizeKey(e);
+      var dir = getDirection();
+      var nextPage = -1;
+      if (key === resolve(ARROW_RIGHT, false, dir)) {
+        nextPage = ++page % length;
+      } else if (key === resolve(ARROW_LEFT, false, dir)) {
+        nextPage = (--page + length) % length;
+      } else if (key === "Home") {
+        nextPage = 0;
+      } else if (key === "End") {
+        nextPage = length - 1;
+      }
+      var item = items[nextPage];
+      if (item) {
+        focus(item.button);
+        go(">" + nextPage);
+        prevent(e, true);
+      }
+    }
+    function getDirection() {
+      return options.paginationDirection || options.direction;
+    }
+    function getAt(index) {
+      return items[Controller2.toPage(index)];
+    }
+    function update() {
+      var prev = getAt(getIndex(true));
+      var curr = getAt(getIndex());
+      if (prev) {
+        var button = prev.button;
+        removeClass(button, CLASS_ACTIVE);
+        removeAttribute(button, ARIA_SELECTED);
+        setAttribute(button, TAB_INDEX, -1);
+      }
+      if (curr) {
+        var _button = curr.button;
+        addClass(_button, CLASS_ACTIVE);
+        setAttribute(_button, ARIA_SELECTED, true);
+        setAttribute(_button, TAB_INDEX, "");
+      }
+      emit(EVENT_PAGINATION_UPDATED, {
+        list,
+        items
+      }, prev, curr);
+    }
+    return {
+      items,
+      mount,
+      destroy,
+      getAt,
+      update
+    };
+  }
+  var TRIGGER_KEYS = [" ", "Enter"];
+  function Sync(Splide2, Components2, options) {
+    var isNavigation = options.isNavigation, slideFocus = options.slideFocus;
+    var events = [];
+    function setup() {
+      Splide2.options = {
+        slideFocus: isUndefined(slideFocus) ? isNavigation : slideFocus
+      };
+    }
+    function mount() {
+      Splide2.splides.forEach(function(target) {
+        if (!target.isParent) {
+          sync(Splide2, target.splide);
+          sync(target.splide, Splide2);
+        }
+      });
+      if (isNavigation) {
+        navigate();
+      }
+    }
+    function destroy() {
+      events.forEach(function(event) {
+        event.destroy();
+      });
+      empty(events);
+    }
+    function remount() {
+      destroy();
+      mount();
+    }
+    function sync(splide, target) {
+      var event = EventInterface(splide);
+      event.on(EVENT_MOVE, function(index, prev, dest) {
+        target.go(target.is(LOOP) ? dest : index);
+      });
+      events.push(event);
+    }
+    function navigate() {
+      var event = EventInterface(Splide2);
+      var on = event.on;
+      on(EVENT_CLICK, onClick);
+      on(EVENT_SLIDE_KEYDOWN, onKeydown);
+      on([EVENT_MOUNTED, EVENT_UPDATED], update);
+      events.push(event);
+      event.emit(EVENT_NAVIGATION_MOUNTED, Splide2.splides);
+    }
+    function update() {
+      setAttribute(Components2.Elements.list, ARIA_ORIENTATION, options.direction === TTB ? "vertical" : "");
+    }
+    function onClick(Slide2) {
+      Splide2.go(Slide2.index);
+    }
+    function onKeydown(Slide2, e) {
+      if (includes(TRIGGER_KEYS, normalizeKey(e))) {
+        onClick(Slide2);
+        prevent(e);
+      }
+    }
+    return {
+      setup,
+      mount,
+      destroy,
+      remount
+    };
+  }
+  function Wheel(Splide2, Components2, options) {
+    var _EventInterface13 = EventInterface(Splide2), bind = _EventInterface13.bind;
+    var lastTime = 0;
+    function mount() {
+      if (options.wheel) {
+        bind(Components2.Elements.track, "wheel", onWheel, SCROLL_LISTENER_OPTIONS);
+      }
+    }
+    function onWheel(e) {
+      if (e.cancelable) {
+        var deltaY = e.deltaY;
+        var backwards = deltaY < 0;
+        var timeStamp = timeOf(e);
+        var _min = options.wheelMinThreshold || 0;
+        var sleep = options.wheelSleep || 0;
+        if (abs(deltaY) > _min && timeStamp - lastTime > sleep) {
+          Splide2.go(backwards ? "<" : ">");
+          lastTime = timeStamp;
+        }
+        shouldPrevent(backwards) && prevent(e);
+      }
+    }
+    function shouldPrevent(backwards) {
+      return !options.releaseWheel || Splide2.state.is(MOVING) || Components2.Controller.getAdjacent(backwards) !== -1;
+    }
+    return {
+      mount
+    };
+  }
+  var SR_REMOVAL_DELAY = 90;
+  function Live(Splide2, Components2, options) {
+    var _EventInterface14 = EventInterface(Splide2), on = _EventInterface14.on;
+    var track = Components2.Elements.track;
+    var enabled = options.live && !options.isNavigation;
+    var sr = create2("span", CLASS_SR);
+    var interval = RequestInterval(SR_REMOVAL_DELAY, apply(toggle, false));
+    function mount() {
+      if (enabled) {
+        disable(!Components2.Autoplay.isPaused());
+        setAttribute(track, ARIA_ATOMIC, true);
+        sr.textContent = "\u2026";
+        on(EVENT_AUTOPLAY_PLAY, apply(disable, true));
+        on(EVENT_AUTOPLAY_PAUSE, apply(disable, false));
+        on([EVENT_MOVED, EVENT_SCROLLED], apply(toggle, true));
+      }
+    }
+    function toggle(active) {
+      setAttribute(track, ARIA_BUSY, active);
+      if (active) {
+        append(track, sr);
+        interval.start();
+      } else {
+        remove(sr);
+      }
+    }
+    function destroy() {
+      removeAttribute(track, [ARIA_LIVE, ARIA_ATOMIC, ARIA_BUSY]);
+      remove(sr);
+    }
+    function disable(disabled) {
+      if (enabled) {
+        setAttribute(track, ARIA_LIVE, disabled ? "off" : "polite");
+      }
+    }
+    return {
+      mount,
+      disable,
+      destroy
+    };
+  }
+  var ComponentConstructors = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    Media,
+    Direction,
+    Elements,
+    Slides,
+    Layout,
+    Clones,
+    Move,
+    Controller,
+    Arrows,
+    Autoplay,
+    Cover,
+    Scroll,
+    Drag,
+    Keyboard,
+    LazyLoad,
+    Pagination,
+    Sync,
+    Wheel,
+    Live
+  });
+  var I18N = {
+    prev: "Previous slide",
+    next: "Next slide",
+    first: "Go to first slide",
+    last: "Go to last slide",
+    slideX: "Go to slide %s",
+    pageX: "Go to page %s",
+    play: "Start autoplay",
+    pause: "Pause autoplay",
+    carousel: "carousel",
+    slide: "slide",
+    select: "Select a slide to show",
+    slideLabel: "%s of %s"
+  };
+  var DEFAULTS = {
+    type: "slide",
+    role: "region",
+    speed: 400,
+    perPage: 1,
+    cloneStatus: true,
+    arrows: true,
+    pagination: true,
+    paginationKeyboard: true,
+    interval: 5e3,
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    resetProgress: true,
+    easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+    drag: true,
+    direction: "ltr",
+    trimSpace: true,
+    focusableNodes: "a, button, textarea, input, select, iframe",
+    live: true,
+    classes: CLASSES,
+    i18n: I18N,
+    reducedMotion: {
+      speed: 0,
+      rewindSpeed: 0,
+      autoplay: "pause"
+    }
+  };
+  function Fade(Splide2, Components2, options) {
+    var _EventInterface15 = EventInterface(Splide2), on = _EventInterface15.on;
+    function mount() {
+      on([EVENT_MOUNTED, EVENT_REFRESH], function() {
+        nextTick(function() {
+          Components2.Slides.style("transition", "opacity " + options.speed + "ms " + options.easing);
+        });
+      });
+    }
+    function start(index, done) {
+      var track = Components2.Elements.track;
+      style(track, "height", unit(rect(track).height));
+      nextTick(function() {
+        done();
+        style(track, "height", "");
+      });
+    }
+    return {
+      mount,
+      start,
+      cancel: noop
+    };
+  }
+  function Slide(Splide2, Components2, options) {
+    var _EventInterface16 = EventInterface(Splide2), bind = _EventInterface16.bind;
+    var Move2 = Components2.Move, Controller2 = Components2.Controller, Scroll2 = Components2.Scroll;
+    var list = Components2.Elements.list;
+    var transition = apply(style, list, "transition");
+    var endCallback;
+    function mount() {
+      bind(list, "transitionend", function(e) {
+        if (e.target === list && endCallback) {
+          cancel();
+          endCallback();
+        }
+      });
+    }
+    function start(index, done) {
+      var destination = Move2.toPosition(index, true);
+      var position = Move2.getPosition();
+      var speed = getSpeed(index);
+      if (abs(destination - position) >= 1 && speed >= 1) {
+        if (options.useScroll) {
+          Scroll2.scroll(destination, speed, false, done);
+        } else {
+          transition("transform " + speed + "ms " + options.easing);
+          Move2.translate(destination, true);
+          endCallback = done;
+        }
+      } else {
+        Move2.jump(index);
+        done();
+      }
+    }
+    function cancel() {
+      transition("");
+      Scroll2.cancel();
+    }
+    function getSpeed(index) {
+      var rewindSpeed = options.rewindSpeed;
+      if (Splide2.is(SLIDE) && rewindSpeed) {
+        var prev = Controller2.getIndex(true);
+        var end = Controller2.getEnd();
+        if (prev === 0 && index >= end || prev >= end && index === 0) {
+          return rewindSpeed;
+        }
+      }
+      return options.speed;
+    }
+    return {
+      mount,
+      start,
+      cancel
+    };
+  }
+  var _Splide = /* @__PURE__ */ function() {
+    function _Splide2(target, options) {
+      this.event = EventInterface();
+      this.Components = {};
+      this.state = State(CREATED);
+      this.splides = [];
+      this._o = {};
+      this._E = {};
+      var root = isString(target) ? query(document, target) : target;
+      assert(root, root + " is invalid.");
+      this.root = root;
+      options = merge({
+        label: getAttribute(root, ARIA_LABEL) || "",
+        labelledby: getAttribute(root, ARIA_LABELLEDBY) || ""
+      }, DEFAULTS, _Splide2.defaults, options || {});
+      try {
+        merge(options, JSON.parse(getAttribute(root, DATA_ATTRIBUTE)));
+      } catch (e) {
+        assert(false, "Invalid JSON");
+      }
+      this._o = Object.create(merge({}, options));
+    }
+    var _proto = _Splide2.prototype;
+    _proto.mount = function mount(Extensions, Transition) {
+      var _this = this;
+      var state = this.state, Components2 = this.Components;
+      assert(state.is([CREATED, DESTROYED]), "Already mounted!");
+      state.set(CREATED);
+      this._C = Components2;
+      this._T = Transition || this._T || (this.is(FADE) ? Fade : Slide);
+      this._E = Extensions || this._E;
+      var Constructors = assign({}, ComponentConstructors, this._E, {
+        Transition: this._T
+      });
+      forOwn(Constructors, function(Component, key) {
+        var component = Component(_this, Components2, _this._o);
+        Components2[key] = component;
+        component.setup && component.setup();
+      });
+      forOwn(Components2, function(component) {
+        component.mount && component.mount();
+      });
+      this.emit(EVENT_MOUNTED);
+      addClass(this.root, CLASS_INITIALIZED);
+      state.set(IDLE);
+      this.emit(EVENT_READY);
+      return this;
+    };
+    _proto.sync = function sync(splide) {
+      this.splides.push({
+        splide
+      });
+      splide.splides.push({
+        splide: this,
+        isParent: true
+      });
+      if (this.state.is(IDLE)) {
+        this._C.Sync.remount();
+        splide.Components.Sync.remount();
+      }
+      return this;
+    };
+    _proto.go = function go(control) {
+      this._C.Controller.go(control);
+      return this;
+    };
+    _proto.on = function on(events, callback) {
+      this.event.on(events, callback);
+      return this;
+    };
+    _proto.off = function off(events) {
+      this.event.off(events);
+      return this;
+    };
+    _proto.emit = function emit(event) {
+      var _this$event;
+      (_this$event = this.event).emit.apply(_this$event, [event].concat(slice(arguments, 1)));
+      return this;
+    };
+    _proto.add = function add(slides, index) {
+      this._C.Slides.add(slides, index);
+      return this;
+    };
+    _proto.remove = function remove2(matcher) {
+      this._C.Slides.remove(matcher);
+      return this;
+    };
+    _proto.is = function is(type) {
+      return this._o.type === type;
+    };
+    _proto.refresh = function refresh() {
+      this.emit(EVENT_REFRESH);
+      return this;
+    };
+    _proto.destroy = function destroy(completely) {
+      if (completely === void 0) {
+        completely = true;
+      }
+      var event = this.event, state = this.state;
+      if (state.is(CREATED)) {
+        EventInterface(this).on(EVENT_READY, this.destroy.bind(this, completely));
+      } else {
+        forOwn(this._C, function(component) {
+          component.destroy && component.destroy(completely);
+        }, true);
+        event.emit(EVENT_DESTROY);
+        event.destroy();
+        completely && empty(this.splides);
+        state.set(DESTROYED);
+      }
+      return this;
+    };
+    _createClass(_Splide2, [{
+      key: "options",
+      get: function get() {
+        return this._o;
+      },
+      set: function set(options) {
+        this._C.Media.set(options, true);
+      }
+    }, {
+      key: "length",
+      get: function get() {
+        return this._C.Slides.getLength(true);
+      }
+    }, {
+      key: "index",
+      get: function get() {
+        return this._C.Controller.getIndex();
+      }
+    }]);
+    return _Splide2;
+  }();
+  var Splide = _Splide;
+  Splide.defaults = {};
+  Splide.STATES = STATES;
+
+  // index.ts
+  var name = "Keegan";
+  var hello = (name2) => {
+    return `hello there ${name2}`;
+  };
+  console.log(hello(name));
+  document.addEventListener("DOMContentLoaded", function() {
+    var splide = new Splide(".splide", {
+      type: "loop",
+      perPage: 3
+    });
+    splide.mount();
+    var myCanvas = document.createElement("canvas");
+    myCanvas.style.width = "100vw";
+    myCanvas.style.height = "100vh";
+    document.body.appendChild(myCanvas);
+    var myConfetti = confetti_module_default.create(myCanvas, {
+      resize: true,
+      useWorker: true
+    });
+    myConfetti({
+      particleCount: 1e3,
+      spread: 160
+    });
+    var donut = new Donutty(document.getElementById("donut"), {
+      min: -50,
+      max: 50,
+      value: 11
+    });
+  });
+})();
+/*!
+ * Splide.js
+ * Version  : 4.0.7
+ * License  : MIT
+ * Copyright: 2022 Naotoshi Fujita
+ */
 /**
  * Donutty ~ Create SVG donut charts with Javascript
  * 7/12/2021
@@ -9,3 +3138,4 @@
  * @link http://simey.me
  * @preserve
  */
+//# sourceMappingURL=index.js.map

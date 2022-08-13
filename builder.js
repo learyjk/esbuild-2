@@ -2,7 +2,7 @@ require("esbuild")
   .build({
     entryPoints: ["index.ts"],
     bundle: true,
-    minify: true,
+    minify: false,
     watch: true,
     sourcemap: true,
     outfile: "dist/index.js",
